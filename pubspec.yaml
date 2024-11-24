@@ -1,0 +1,26 @@
+name: dfc_store
+description: DFC Store
+version: 1.0.1
+homepage: distantfutu.re
+publish_to: 'none'
+
+environment:
+  sdk: ^3.3.4
+
+dependencies:
+  collection: ^1.18.0
+  dfc_flutter:
+    git: https://github.com/sgehrman/dfc_flutter
+  flutter:
+    sdk: flutter
+  http: ^1.2.2
+  json_annotation: ^4.9.0
+
+dev_dependencies:
+  # must include this with dfc_lints. see https://github.com/dart-code-checker/dart-code-metrics/issues/254
+  dart_code_metrics:
+    git: https://github.com/rei-codes/dart-code-metrics
+  dfc_lints:
+    git: https://github.com/sgehrman/dfc_lints
+
+flutter:

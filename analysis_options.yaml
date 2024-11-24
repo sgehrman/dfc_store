@@ -1,0 +1,5 @@
+include: package:dfc_lints/rules.yaml
+
+analyzer:
+  exclude:
+    - lib/l10n/*.dart
