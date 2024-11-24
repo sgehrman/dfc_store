@@ -97,7 +97,7 @@ class LicenseKeyServer {
     return LicenseResponseModel.error();
   }
 
-  Future<LicenseResponseModel> handleLostLicenseReq({
+  Future<LicenseResponseModel> lostLicense({
     required String email,
     required bool sendEmail,
   }) async {
@@ -114,6 +114,17 @@ class LicenseKeyServer {
     }
 
     return LicenseResponseModel.error();
+  }
+
+  Future<List<String>> youTubeVideoIds() async {
+    final response = await _postToRestApi(
+      {
+        'action': 'youtube_video_ids',
+      },
+    );
+
+    final videoIdsString = response['videoIds'] as String? ?? '';
+    return videoIdsString.split(',');
   }
 
   // =================================================================
