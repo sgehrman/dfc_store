@@ -78,7 +78,7 @@ class _LicenseKeyTextField extends StatelessWidget {
   });
 
   final TextEditingController textController;
-  final void Function()? onActivate;
+  final void Function() onActivate;
   final bool isActivated;
 
   @override
@@ -92,7 +92,7 @@ class _LicenseKeyTextField extends StatelessWidget {
           onPressed: onActivate,
         ),
       ),
-      onSubmitted: (v) => onActivate?.call(),
+      onSubmitted: (v) => onActivate.call(),
       keyboardType: TextInputType.text,
       autofocus: true,
       textInputAction: TextInputAction.done,
@@ -207,6 +207,8 @@ class ActivateTabState extends State<ActivateTab> {
   Future<void> _toggleActivation() async {
     final wasActivated = _isActivated();
 
+    Prefs.licenseKey = _licenseKeyController.text;
+
     // once we load with the entered key, it might be activated now
     // that's why we check above, this toggle will get out of sync otherwise
     await _reloadLicenseKey();
@@ -245,6 +247,8 @@ class ActivateTabState extends State<ActivateTab> {
     }
 
     if (mounted) {
+      await _reloadLicenseKey();
+
       setState(() {});
     }
   }

@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       title: 'Admin App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
       routes: <String, Widget Function(BuildContext)>{
@@ -71,29 +71,31 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            DFButton(
-              label: 'Create License',
-              onPressed: () {
-                showAdminDialog(context: context);
-              },
-            ),
-            const SizedBox(height: 20),
-            DFButton(
-              label: 'Activate License',
-              onPressed: () {
-                showActivateDialog(context: context);
-              },
-            ),
-            const SizedBox(height: 20),
-            const Text('Lost License'),
-            const LostLicenseForm(
-              isMobile: false,
-            ),
-          ],
+      body: SharedScaffoldContext(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              DFButton(
+                label: 'Create License',
+                onPressed: () {
+                  showAdminDialog(context: context);
+                },
+              ),
+              const SizedBox(height: 20),
+              DFButton(
+                label: 'Activate License',
+                onPressed: () {
+                  showActivateDialog(context: context);
+                },
+              ),
+              const SizedBox(height: 20),
+              const Text('Lost License'),
+              const LostLicenseForm(
+                isMobile: false,
+              ),
+            ],
+          ),
         ),
       ),
     );
