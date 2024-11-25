@@ -27,7 +27,7 @@ class LicenseCache {
     // save license key pref here
     Prefs.licenseKey = licenseKey;
 
-    final model = await ServerRestApi.check(
+    final model = await ServerRestApi.loadModel(
       licenseKey: licenseKey,
       licenseVerificationKey: Prefs.verifySecret,
       webDomain: Prefs.webDomain,

@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 
 class ServerRestApi {
   // flutter: {"result":"error","message":"Invalid license key","error_code":60}
-  static Future<LicenseKeyModel> check({
+  static Future<LicenseKeyModel> loadModel({
     required String licenseVerificationKey,
     required String webDomain,
     required String licenseKey,
