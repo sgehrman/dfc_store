@@ -1,5 +1,5 @@
 import 'package:admin_app/dialogs/shared/widget_dialog.dart';
-import 'package:admin_app/prefs.dart';
+import 'package:admin_app/misc/prefs.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart' hide FormBuilder;
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';

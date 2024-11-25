@@ -1,6 +1,7 @@
 import 'package:admin_app/dialogs/json_dialog.dart';
 import 'package:admin_app/dialogs/shared/widget_dialog.dart';
-import 'package:admin_app/prefs.dart';
+import 'package:admin_app/misc/license_cache.dart';
+import 'package:admin_app/misc/prefs.dart';
 import 'package:dfc_flutter/dfc_flutter_web.dart';
 import 'package:dfc_store/dfc_store.dart';
 import 'package:flutter/material.dart';
@@ -172,26 +173,20 @@ class ActivateTabState extends State<ActivateTab> {
   }
 
   Future<void> _setup() async {
-    // if not in prefs, see if the server has one
-    // prioritize pref since they might not be logged in
-    final String licenseKey = Prefs.licenseKey;
-
-    _licenseKeyController.text = licenseKey;
+    _licenseKeyController.text = Prefs.licenseKey;
 
     await _reloadLicenseKey();
   }
 
   bool _isActivated() {
-    // final model = await ServerRestApi.check(
-    //   licenseKey: _licenseKeyController.text,
-    //   licenseVerificationKey: Prefs.verifySecret,
-    //   webDomain: Prefs.webDomain,
-    // );
-
-    final model = _LicenseKeyModelCache.shared
-        .get(licenseKey: _licenseKeyController.text);
+    final model =
+        LicenseCache.shared.get(licenseKey: _licenseKeyController.text);
 
     if (model != null) {
+      // ## in Path Finder, also compare the email address
+      // not doing it here just to keep things flexible
+      // if (model.email == usersEmailStoredInKeychain) {}
+
       return model.check(
         licenseKey: _licenseKeyController.text,
         machineId: Prefs.machineId,
@@ -202,32 +197,28 @@ class ActivateTabState extends State<ActivateTab> {
   }
 
   Future<void> _toggleActivation() async {
-    final wasActivated = _isActivated();
-
+    // save license key pref here
     Prefs.licenseKey = _licenseKeyController.text;
 
-    // once we load with the entered key, it might be activated now
-    // that's why we check above, this toggle will get out of sync otherwise
+    // reloads based on _licenseKeyController.text
     await _reloadLicenseKey();
 
-    if (!wasActivated) {
-      if (!_isActivated()) {
-        await ServerRestApi.activate(
-          licenseKey: _licenseKeyController.text,
-          domain: Prefs.machineId,
-          licenseVerificationKey: Prefs.verifySecret,
-          webDomain: Prefs.webDomain,
-        );
+    if (!_isActivated()) {
+      await ServerRestApi.activate(
+        licenseKey: _licenseKeyController.text,
+        domain: Prefs.machineId,
+        licenseVerificationKey: Prefs.verifySecret,
+        webDomain: Prefs.webDomain,
+      );
 
-        if (_isActivated()) {
-          Utils.successSnackbar(
-            title: 'Success',
-            message: 'Activated',
-          );
-        }
+      if (_isActivated()) {
+        Utils.successSnackbar(
+          title: 'Success',
+          message: 'Activated',
+        );
       }
     } else {
-      final model = _LicenseKeyModelCache.shared.get(
+      final model = LicenseCache.shared.get(
         licenseKey: _licenseKeyController.text,
       );
 
@@ -238,14 +229,18 @@ class ActivateTabState extends State<ActivateTab> {
           licenseKey: model.licenseKey,
           licenseVerificationKey: Prefs.verifySecret,
         );
+
+        if (!_isActivated()) {
+          Utils.successSnackbar(
+            title: 'Success',
+            message: 'Deactivated',
+          );
+        }
       }
     }
 
-    if (mounted) {
-      await _reloadLicenseKey();
-
-      setState(() {});
-    }
+    // this calls setState
+    await _reloadLicenseKey();
   }
 
   Future<void> _reloadLicenseKey() async {
@@ -255,7 +250,7 @@ class ActivateTabState extends State<ActivateTab> {
       webDomain: Prefs.webDomain,
     );
 
-    _LicenseKeyModelCache.shared.set(model: model);
+    LicenseCache.shared.set(model: model);
 
     if (mounted) {
       setState(() {});
@@ -286,8 +281,8 @@ class ActivateTabState extends State<ActivateTab> {
         DFIconButton(
           icon: const Icon(Icons.info_outline),
           onPressed: () {
-            final model = _LicenseKeyModelCache.shared
-                .get(licenseKey: _licenseKeyController.text);
+            final model =
+                LicenseCache.shared.get(licenseKey: _licenseKeyController.text);
 
             showJsonDialog(
               context: context,
@@ -308,7 +303,7 @@ class ActivateTabState extends State<ActivateTab> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> children = [];
-    final model = _LicenseKeyModelCache.shared.get(
+    final model = LicenseCache.shared.get(
       licenseKey: _licenseKeyController.text,
     );
 
@@ -406,27 +401,5 @@ class ActivateTabState extends State<ActivateTab> {
       mainAxisSize: MainAxisSize.min,
       children: children,
     );
-  }
-}
-
-// ============================================================
-
-class _LicenseKeyModelCache {
-  _LicenseKeyModelCache._();
-
-  static _LicenseKeyModelCache shared = _LicenseKeyModelCache._();
-
-  final Map<String, LicenseKeyModel> _cache = {};
-
-  void remove({required String licenseKey}) {
-    _cache.remove(licenseKey);
-  }
-
-  LicenseKeyModel? get({required String licenseKey}) {
-    return _cache[licenseKey];
-  }
-
-  void set({required LicenseKeyModel model}) {
-    _cache[model.licenseKey] = model;
   }
 }
