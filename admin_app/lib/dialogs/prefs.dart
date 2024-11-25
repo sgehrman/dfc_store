@@ -64,4 +64,20 @@ class Prefs {
       value: value,
     );
   }
+
+  // ----------------------------------------------------
+  // licenseKey
+
+  static const String kLicenseKeyPrefKey = 'license-key';
+  static String get licenseKey => Preferences().stringPref(
+        key: kLicenseKeyPrefKey,
+        // defaultValue: '',
+      );
+
+  static set licenseKey(String value) {
+    Preferences().setStringPref(
+      key: kLicenseKeyPrefKey,
+      value: value,
+    );
+  }
 }

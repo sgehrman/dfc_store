@@ -1,3 +1,4 @@
+import 'package:admin_app/dialogs/activate_dialog.dart';
 import 'package:admin_app/dialogs/admin_dialog.dart';
 import 'package:admin_app/dialogs/lost_license_form.dart';
 import 'package:admin_app/dialogs/settings.dart';
@@ -22,7 +23,20 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Admin App Home Page'),
+      routes: <String, Widget Function(BuildContext)>{
+        '/': (context) {
+          // SharedContext is for snackbars
+          SharedContext().mainContext = context;
+
+          return const MyHomePage(title: 'Admin App Home Page');
+        },
+      },
+      localizationsDelegates: const [
+        ...dfcFlutterLocDelegates,
+      ],
+      supportedLocales: const [
+        ...dfcFlutterLocales,
+      ],
     );
   }
 }
@@ -55,11 +69,6 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             icon: const Icon(Icons.settings),
           ),
-          const SizedBox(height: 20),
-          const Text('Lost License'),
-          const LostLicenseForm(
-            isMobile: false,
-          ),
         ],
       ),
       body: Center(
@@ -71,6 +80,18 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 showAdminDialog(context: context);
               },
+            ),
+            const SizedBox(height: 20),
+            DFButton(
+              label: 'Activate License',
+              onPressed: () {
+                showActivateDialog(context: context);
+              },
+            ),
+            const SizedBox(height: 20),
+            const Text('Lost License'),
+            const LostLicenseForm(
+              isMobile: false,
             ),
           ],
         ),
