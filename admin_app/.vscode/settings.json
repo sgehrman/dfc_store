@@ -1,0 +1,18 @@
+{
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#02263b",
+    "titleBar.inactiveBackground": "#02263b",
+    "titleBar.activeBackground": "#02263b"
+  },
+  "explorer.compactFolders": false,
+  "workbench.editor.limit.enabled": true,
+  "dart.closingLabels": false,
+  "editor.bracketPairColorization.enabled": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit",
+    "source.fixAll": "explicit"
+  },
+  "editor.formatOnSave": true,
+  "prettier.singleQuote": true,
+  "prettier.trailingComma": "all"
+}
