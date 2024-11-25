@@ -13,11 +13,12 @@ Future<void> showActivateDialog({
   return widgetDialog<List<String>>(
     context: context,
     dialogWidth: 700,
+    scrollable: false,
     builder: WidgetDialogContentBuilder(
       (keyboardNotifier, titleNotifier) => [
         Flexible(
           child: SizedBox(
-            height: 400,
+            height: 1000,
             child: ActivateTab(keyboardNotifier),
           ),
         ),
@@ -64,7 +65,9 @@ class _ActivationTable extends StatelessWidget {
     }
 
     return DecoratedBox(
-      decoration: const BoxDecoration(border: Border()),
+      decoration: const BoxDecoration(
+        border: Border.fromBorderSide(BorderSide()),
+      ),
       child: content,
     );
   }
@@ -74,26 +77,41 @@ class _ActivationTable extends StatelessWidget {
 class _LicenseKeyTextField extends StatelessWidget {
   const _LicenseKeyTextField({
     required this.textController,
-    required this.onActivate,
-    required this.isActivated,
   });
 
   final TextEditingController textController;
-  final void Function() onActivate;
-  final bool isActivated;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         isDense: true,
         hintText: 'License Key',
-        suffix: DFTextButton(
-          label: isActivated ? 'Deactivate' : 'Activate',
-          onPressed: onActivate,
-        ),
       ),
-      onSubmitted: (v) => onActivate.call(),
+      keyboardType: TextInputType.text,
+      autofocus: true,
+      textInputAction: TextInputAction.done,
+      controller: textController,
+    );
+  }
+}
+
+// ================================================
+
+class _EmailTextField extends StatelessWidget {
+  const _EmailTextField({
+    required this.textController,
+  });
+
+  final TextEditingController textController;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      decoration: const InputDecoration(
+        isDense: true,
+        hintText: 'Email',
+      ),
       keyboardType: TextInputType.text,
       autofocus: true,
       textInputAction: TextInputAction.done,
@@ -164,6 +182,7 @@ class ActivateTab extends StatefulWidget {
 
 class ActivateTabState extends State<ActivateTab> {
   final _licenseKeyController = TextEditingController();
+  final _emailController = TextEditingController();
 
   @override
   void initState() {
@@ -173,6 +192,9 @@ class ActivateTabState extends State<ActivateTab> {
   }
 
   Future<void> _setup() async {
+    _licenseKeyController.text = Prefs.licenseKey;
+    _emailController.text = Prefs.email;
+
     await _reloadLicenseKey();
   }
 
@@ -180,12 +202,12 @@ class ActivateTabState extends State<ActivateTab> {
     final model = _currentModel();
 
     if (model != null) {
-      // ## in Path Finder, also compare the email address
-      // not doing it here just to keep things flexible
-      // if (model.email == usersEmailStoredInKeychain) {}
+      // save email
+      Prefs.email = _emailController.text;
 
-      return model.check(
+      return model.checkAll(
         licenseKey: _licenseKeyController.text,
+        email: _emailController.text,
         machineId: Prefs.machineId,
       );
     }
@@ -193,47 +215,60 @@ class ActivateTabState extends State<ActivateTab> {
     return false;
   }
 
-  Future<void> _toggleActivation() async {
+  Future<void> _activate({required bool activate}) async {
     // make sure they didn't change the license text, reload first
     await _reloadLicenseKey();
 
-    if (!_isActivated()) {
-      await ServerRestApi.activate(
-        licenseKey: _licenseKeyController.text,
-        domain: Prefs.machineId,
-        licenseVerificationKey: Prefs.verifySecret,
-        webDomain: Prefs.webDomain,
-      );
-
-      if (_isActivated()) {
-        Utils.successSnackbar(
-          title: 'Success',
-          message: 'Activated',
-        );
-      }
-    } else {
+    // could have a sitution where the user just puts in their email/license
+    // and the button says activate, but this would deactiate them if they hit the button
+    if (activate != _isActivated()) {
       final model = _currentModel();
 
-      if (model != null) {
-        await ServerRestApi.deactivate(
-          webDomain: Prefs.webDomain,
-          domain: Prefs.machineId,
-          licenseKey: model.licenseKey,
-          licenseVerificationKey: Prefs.verifySecret,
-        );
-
+      // make sure the license is valid and the email matches
+      if (model != null &&
+          model.checkLicenseAndEmail(
+            licenseKey: _licenseKeyController.text,
+            email: _emailController.text,
+          )) {
         if (!_isActivated()) {
-          Utils.successSnackbar(
-            title: 'Success',
-            message: 'Deactivated',
+          await ServerRestApi.activate(
+            licenseKey: _licenseKeyController.text,
+            domain: Prefs.machineId,
+            licenseVerificationKey: Prefs.verifySecret,
+            webDomain: Prefs.webDomain,
           );
+
+          if (_isActivated()) {
+            Utils.successSnackbar(
+              title: 'Success',
+              message: 'Activated',
+            );
+          }
+        } else {
+          final model = _currentModel();
+
+          if (model != null) {
+            await ServerRestApi.deactivate(
+              webDomain: Prefs.webDomain,
+              domain: Prefs.machineId,
+              licenseKey: model.licenseKey,
+              licenseVerificationKey: Prefs.verifySecret,
+            );
+
+            if (!_isActivated()) {
+              Utils.successSnackbar(
+                title: 'Success',
+                message: 'Deactivated',
+              );
+            }
+          }
         }
+
+        // reload and update UI based on activate/deactivate
+        // this calls setState
+        await _reloadLicenseKey();
       }
     }
-
-    // reload and update UI based on activate/deactivate
-    // this calls setState
-    await _reloadLicenseKey();
   }
 
   Future<void> _reloadLicenseKey() async {
@@ -352,12 +387,19 @@ class ActivateTabState extends State<ActivateTab> {
       }
     }
 
+    final isActivated = _isActivated();
+
     children.addAll([
       const SizedBox(height: 20),
       _LicenseKeyTextField(
         textController: _licenseKeyController,
-        onActivate: _toggleActivation,
-        isActivated: _isActivated(),
+      ),
+      const SizedBox(height: 10),
+      _EmailTextField(textController: _emailController),
+      const SizedBox(height: 20),
+      DFTextButton(
+        label: isActivated ? 'Deactivate' : 'Activate',
+        onPressed: () => _activate(activate: !isActivated),
       ),
       const SizedBox(height: 20),
       Text16('Machine ID'),
@@ -375,14 +417,9 @@ class ActivateTabState extends State<ActivateTab> {
         'Activations $activations',
         bold: false,
       ),
+      const SizedBox(height: 20),
+      _checkButton(),
     ]);
-
-    if (_isActivated()) {
-      children.addAll([
-        const SizedBox(height: 20),
-        _checkButton(),
-      ]);
-    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -82,7 +82,23 @@ class Prefs {
   }
 
   // ----------------------------------------------------
-  // licenseKey
+  // email
+
+  static const String kEmailPrefKey = 'email-key';
+  static String get email => Preferences().stringPref(
+        key: kEmailPrefKey,
+        // defaultValue: '',
+      );
+
+  static set email(String value) {
+    Preferences().setStringPref(
+      key: kEmailPrefKey,
+      value: value,
+    );
+  }
+
+  // ----------------------------------------------------
+  // machineId
 
   static const String kMachineIdPrefKey = 'machine-id';
   static String get machineId => Preferences().stringPref(

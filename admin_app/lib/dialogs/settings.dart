@@ -63,6 +63,7 @@ class _SettingsFormState extends State<SettingsForm> {
     _initialValue = {
       'verifySecret': Prefs.verifySecret,
       'webDomain': Prefs.webDomain,
+      'email': Prefs.email,
       'restUrl': Prefs.restUrl,
       'machineId': Prefs.machineId,
       'apiPassword': Prefs.apiPassword,
@@ -77,6 +78,7 @@ class _SettingsFormState extends State<SettingsForm> {
 
       Prefs.verifySecret = state.value['verifySecret'] as String? ?? '';
       Prefs.webDomain = state.value['webDomain'] as String? ?? '';
+      Prefs.email = state.value['email'] as String? ?? '';
       Prefs.restUrl = state.value['restUrl'] as String? ?? '';
       Prefs.machineId = state.value['machineId'] as String? ?? '';
       Prefs.apiPassword = state.value['apiPassword'] as String? ?? '';
@@ -138,6 +140,16 @@ class _SettingsFormState extends State<SettingsForm> {
                   textInputAction: TextInputAction.next,
                   decoration: const InputDecoration(
                     labelText: 'Machine ID',
+                  ),
+                ),
+                const SizedBox(height: 20),
+                FormBuilderTextField(
+                  name: 'email',
+                  autocorrect: false,
+                  keyboardType: TextInputType.name,
+                  textInputAction: TextInputAction.next,
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
                   ),
                 ),
                 const SizedBox(height: 20),
