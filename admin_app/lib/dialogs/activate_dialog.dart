@@ -173,14 +173,11 @@ class ActivateTabState extends State<ActivateTab> {
   }
 
   Future<void> _setup() async {
-    _licenseKeyController.text = Prefs.licenseKey;
-
     await _reloadLicenseKey();
   }
 
   bool _isActivated() {
-    final model =
-        LicenseCache.shared.get(licenseKey: _licenseKeyController.text);
+    final model = _currentModel();
 
     if (model != null) {
       // ## in Path Finder, also compare the email address
@@ -197,10 +194,7 @@ class ActivateTabState extends State<ActivateTab> {
   }
 
   Future<void> _toggleActivation() async {
-    // save license key pref here
-    Prefs.licenseKey = _licenseKeyController.text;
-
-    // reloads based on _licenseKeyController.text
+    // make sure they didn't change the license text, reload first
     await _reloadLicenseKey();
 
     if (!_isActivated()) {
@@ -218,9 +212,7 @@ class ActivateTabState extends State<ActivateTab> {
         );
       }
     } else {
-      final model = LicenseCache.shared.get(
-        licenseKey: _licenseKeyController.text,
-      );
+      final model = _currentModel();
 
       if (model != null) {
         await ServerRestApi.deactivate(
@@ -239,18 +231,13 @@ class ActivateTabState extends State<ActivateTab> {
       }
     }
 
+    // reload and update UI based on activate/deactivate
     // this calls setState
     await _reloadLicenseKey();
   }
 
   Future<void> _reloadLicenseKey() async {
-    final model = await ServerRestApi.check(
-      licenseKey: _licenseKeyController.text,
-      licenseVerificationKey: Prefs.verifySecret,
-      webDomain: Prefs.webDomain,
-    );
-
-    LicenseCache.shared.set(model: model);
+    await LicenseCache.loadLicenseKey(_licenseKeyController.text);
 
     if (mounted) {
       setState(() {});
@@ -274,6 +261,10 @@ class ActivateTabState extends State<ActivateTab> {
     }
   }
 
+  LicenseKeyModel? _currentModel() {
+    return LicenseCache.shared.get(licenseKey: _licenseKeyController.text);
+  }
+
   Widget _checkButton() {
     return Wrap(
       alignment: WrapAlignment.end,
@@ -281,8 +272,7 @@ class ActivateTabState extends State<ActivateTab> {
         DFIconButton(
           icon: const Icon(Icons.info_outline),
           onPressed: () {
-            final model =
-                LicenseCache.shared.get(licenseKey: _licenseKeyController.text);
+            final model = _currentModel();
 
             showJsonDialog(
               context: context,
@@ -303,9 +293,7 @@ class ActivateTabState extends State<ActivateTab> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> children = [];
-    final model = LicenseCache.shared.get(
-      licenseKey: _licenseKeyController.text,
-    );
+    final model = _currentModel();
 
     if (model == null) {
       return const NothingWidget();

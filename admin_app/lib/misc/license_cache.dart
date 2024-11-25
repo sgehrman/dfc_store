@@ -1,3 +1,4 @@
+import 'package:admin_app/misc/prefs.dart';
 import 'package:dfc_store/dfc_store.dart';
 
 class LicenseCache {
@@ -17,5 +18,21 @@ class LicenseCache {
 
   void set({required LicenseKeyModel model}) {
     _cache[model.licenseKey] = model;
+  }
+
+  // =======================================================
+  // urils
+
+  static Future<void> loadLicenseKey(String licenseKey) async {
+    // save license key pref here
+    Prefs.licenseKey = licenseKey;
+
+    final model = await ServerRestApi.check(
+      licenseKey: licenseKey,
+      licenseVerificationKey: Prefs.verifySecret,
+      webDomain: Prefs.webDomain,
+    );
+
+    LicenseCache.shared.set(model: model);
   }
 }
