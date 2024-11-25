@@ -1,4 +1,5 @@
-import 'package:admin_app/dialogs/widget_dialog.dart';
+import 'package:admin_app/dialogs/shared/widget_dialog.dart';
+import 'package:admin_app/prefs.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart' hide FormBuilder;
 import 'package:dfc_store/dfc_store.dart';
 import 'package:flutter/material.dart';
@@ -69,6 +70,16 @@ class _LicenseKeyFormState extends State<LicenseKeyForm> {
   }
 
   Future<void> _doSubmit() async {
+    if (Prefs.apiPassword.isEmpty) {
+      Utils.successSnackbar(
+        title: 'Error',
+        message: 'API password is blank',
+        error: true,
+      );
+
+      return;
+    }
+
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
@@ -77,7 +88,6 @@ class _LicenseKeyFormState extends State<LicenseKeyForm> {
       final email = state.value['email'] as String? ?? '';
       final firstName = state.value['firstName'] as String? ?? '';
       final lastName = state.value['lastName'] as String? ?? '';
-      final password = state.value['password'] as String? ?? '';
 
       // clear out email and toast
       state.fields['firstName']?.didChange('');
@@ -90,7 +100,7 @@ class _LicenseKeyFormState extends State<LicenseKeyForm> {
         email: email,
         firstName: firstName,
         lastName: lastName,
-        password: password,
+        password: Prefs.apiPassword,
       );
 
       if (success) {
@@ -118,10 +128,7 @@ class _LicenseKeyFormState extends State<LicenseKeyForm> {
         mainAxisSize: MainAxisSize.min,
         children: [
           const Text(
-            'Send license key',
-          ),
-          const Text(
-            'Must have valid password',
+            'Create license key and send it to user',
           ),
           const SizedBox(height: 20),
           FormBuilder(
@@ -182,24 +189,6 @@ class _LicenseKeyFormState extends State<LicenseKeyForm> {
                   validator: FormBuilderValidators.compose([
                     FormBuilderValidators.required(
                       errorText: 'Please enter the last name',
-                    ),
-                  ]),
-                ),
-                FormBuilderTextField(
-                  name: 'password',
-                  autocorrect: false,
-                  keyboardType: TextInputType.name,
-                  textInputAction: TextInputAction.done,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    icon: Icon(Icons.password),
-                    labelText: 'Password',
-                    helperText: ' ',
-                  ),
-                  onSubmitted: (unused) => _doSubmit(),
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(
-                      errorText: 'Please enter the password',
                     ),
                   ]),
                 ),

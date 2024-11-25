@@ -1,5 +1,5 @@
-import 'package:admin_app/dialogs/prefs.dart';
-import 'package:admin_app/dialogs/widget_dialog.dart';
+import 'package:admin_app/dialogs/shared/widget_dialog.dart';
+import 'package:admin_app/prefs.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart' hide FormBuilder;
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -64,6 +64,7 @@ class _SettingsFormState extends State<SettingsForm> {
       'verifySecret': Prefs.verifySecret,
       'webDomain': Prefs.webDomain,
       'restUrl': Prefs.restUrl,
+      'machineId': Prefs.machineId,
       'apiPassword': Prefs.apiPassword,
     };
   }
@@ -74,15 +75,13 @@ class _SettingsFormState extends State<SettingsForm> {
 
       final state = _formKey.currentState!;
 
-      final verifySecret = state.value['verifySecret'] as String? ?? '';
-      final webDomain = state.value['webDomain'] as String? ?? '';
-      final restUrl = state.value['restUrl'] as String? ?? '';
-      final apiPassword = state.value['apiPassword'] as String? ?? '';
+      Prefs.verifySecret = state.value['verifySecret'] as String? ?? '';
+      Prefs.webDomain = state.value['webDomain'] as String? ?? '';
+      Prefs.restUrl = state.value['restUrl'] as String? ?? '';
+      Prefs.machineId = state.value['machineId'] as String? ?? '';
+      Prefs.apiPassword = state.value['apiPassword'] as String? ?? '';
 
-      Prefs.apiPassword = apiPassword;
-      Prefs.webDomain = webDomain;
-      Prefs.restUrl = restUrl;
-      Prefs.verifySecret = verifySecret;
+      Navigator.of(context).pop();
     }
   }
 
@@ -107,9 +106,10 @@ class _SettingsFormState extends State<SettingsForm> {
                   textInputAction: TextInputAction.next,
                   decoration: const InputDecoration(
                     labelText: 'Rest Url',
-                    helperText: ' ',
+                    hintText: 'https://cocoatech.io/wp-json/api/rest',
                   ),
                 ),
+                const SizedBox(height: 20),
                 FormBuilderTextField(
                   name: 'webDomain',
                   autocorrect: false,
@@ -117,9 +117,10 @@ class _SettingsFormState extends State<SettingsForm> {
                   textInputAction: TextInputAction.next,
                   decoration: const InputDecoration(
                     labelText: 'Web Domain',
-                    helperText: ' ',
+                    hintText: 'cocoatech.io',
                   ),
                 ),
+                const SizedBox(height: 20),
                 FormBuilderTextField(
                   name: 'verifySecret',
                   autocorrect: false,
@@ -127,9 +128,19 @@ class _SettingsFormState extends State<SettingsForm> {
                   textInputAction: TextInputAction.next,
                   decoration: const InputDecoration(
                     labelText: 'Verify Secret',
-                    helperText: ' ',
                   ),
                 ),
+                const SizedBox(height: 20),
+                FormBuilderTextField(
+                  name: 'machineId',
+                  autocorrect: false,
+                  keyboardType: TextInputType.name,
+                  textInputAction: TextInputAction.next,
+                  decoration: const InputDecoration(
+                    labelText: 'Machine ID',
+                  ),
+                ),
+                const SizedBox(height: 20),
                 FormBuilderTextField(
                   name: 'apiPassword',
                   autocorrect: false,
@@ -138,7 +149,6 @@ class _SettingsFormState extends State<SettingsForm> {
                   obscureText: _obscureText,
                   decoration: InputDecoration(
                     labelText: 'Password',
-                    helperText: ' ',
                     suffixIcon: IconButton(
                       icon: Icon(
                         _obscureText ? Icons.visibility : Icons.visibility_off,
@@ -152,11 +162,14 @@ class _SettingsFormState extends State<SettingsForm> {
                   ),
                 ),
                 const SizedBox(
-                  width: 20,
+                  height: 40,
                 ),
-                DFButton(
-                  label: 'Save',
-                  onPressed: _doSubmit,
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: DFButton(
+                    label: 'Save',
+                    onPressed: _doSubmit,
+                  ),
                 ),
               ],
             ),

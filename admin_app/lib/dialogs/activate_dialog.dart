@@ -1,6 +1,6 @@
 import 'package:admin_app/dialogs/json_dialog.dart';
-import 'package:admin_app/dialogs/prefs.dart';
-import 'package:admin_app/dialogs/widget_dialog.dart';
+import 'package:admin_app/dialogs/shared/widget_dialog.dart';
+import 'package:admin_app/prefs.dart';
 import 'package:dfc_flutter/dfc_flutter_web.dart';
 import 'package:dfc_store/dfc_store.dart';
 import 'package:flutter/material.dart';
@@ -163,7 +163,6 @@ class ActivateTab extends StatefulWidget {
 
 class ActivateTabState extends State<ActivateTab> {
   final _licenseKeyController = TextEditingController();
-  String _machineId = '';
 
   @override
   void initState() {
@@ -173,8 +172,6 @@ class ActivateTabState extends State<ActivateTab> {
   }
 
   Future<void> _setup() async {
-    _machineId = 'machineId12343';
-
     // if not in prefs, see if the server has one
     // prioritize pref since they might not be logged in
     final String licenseKey = Prefs.licenseKey;
@@ -197,7 +194,7 @@ class ActivateTabState extends State<ActivateTab> {
     if (model != null) {
       return model.check(
         licenseKey: _licenseKeyController.text,
-        machineId: _machineId,
+        machineId: Prefs.machineId,
       );
     }
 
@@ -217,7 +214,7 @@ class ActivateTabState extends State<ActivateTab> {
       if (!_isActivated()) {
         await ServerRestApi.activate(
           licenseKey: _licenseKeyController.text,
-          domain: _machineId,
+          domain: Prefs.machineId,
           licenseVerificationKey: Prefs.verifySecret,
           webDomain: Prefs.webDomain,
         );
@@ -235,14 +232,12 @@ class ActivateTabState extends State<ActivateTab> {
       );
 
       if (model != null) {
-        if (_machineId.isNotEmpty && context.mounted) {
-          await ServerRestApi.deactivate(
-            webDomain: Prefs.webDomain,
-            domain: _machineId,
-            licenseKey: model.licenseKey,
-            licenseVerificationKey: Prefs.verifySecret,
-          );
-        }
+        await ServerRestApi.deactivate(
+          webDomain: Prefs.webDomain,
+          domain: Prefs.machineId,
+          licenseKey: model.licenseKey,
+          licenseVerificationKey: Prefs.verifySecret,
+        );
       }
     }
 
@@ -383,12 +378,12 @@ class ActivateTabState extends State<ActivateTab> {
       ),
       const SizedBox(height: 20),
       Text16('Machine ID'),
-      Text(_machineId),
+      Text(Prefs.machineId),
       const SizedBox(height: 20),
       Expanded(
         child: _ActivationTable(
           model: model,
-          machineId: _machineId,
+          machineId: Prefs.machineId,
           onChanged: _reloadLicenseKey,
         ),
       ),

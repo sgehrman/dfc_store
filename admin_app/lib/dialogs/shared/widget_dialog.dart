@@ -1,4 +1,4 @@
-import 'package:admin_app/dialogs/dialog_base.dart';
+import 'package:admin_app/dialogs/shared/dialog_base.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart';
 import 'package:flutter/material.dart';
 

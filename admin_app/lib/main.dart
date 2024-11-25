@@ -82,14 +82,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   showAdminDialog(context: context);
                 },
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               DFButton(
                 label: 'Activate License',
                 onPressed: () {
                   showActivateDialog(context: context);
                 },
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 80),
               const Text('Lost License'),
               const LostLicenseForm(
                 isMobile: false,

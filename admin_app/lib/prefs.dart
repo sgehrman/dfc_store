@@ -80,4 +80,20 @@ class Prefs {
       value: value,
     );
   }
+
+  // ----------------------------------------------------
+  // licenseKey
+
+  static const String kMachineIdPrefKey = 'machine-id';
+  static String get machineId => Preferences().stringPref(
+        key: kMachineIdPrefKey,
+        defaultValue: '2024-mac-pro-1234',
+      );
+
+  static set machineId(String value) {
+    Preferences().setStringPref(
+      key: kMachineIdPrefKey,
+      value: value,
+    );
+  }
 }
