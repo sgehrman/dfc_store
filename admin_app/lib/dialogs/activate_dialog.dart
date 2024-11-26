@@ -27,136 +27,6 @@ Future<void> showActivateDialog({
   );
 }
 
-// ===============================================================
-
-class _ActivationTable extends StatelessWidget {
-  const _ActivationTable({
-    required this.onDeactivate,
-    required this.model,
-    required this.machineId,
-  });
-
-  final void Function(String registeredDomain) onDeactivate;
-  final LicenseKeyModel? model;
-  final String machineId;
-
-  @override
-  Widget build(BuildContext context) {
-    Widget content;
-
-    if (model == null || model!.registeredDomains.isEmpty) {
-      content = const NothingFound(
-        message: 'No Activations',
-      );
-    } else {
-      content = ListView.builder(
-        itemCount: model!.registeredDomains.length,
-        itemBuilder: (context, index) {
-          final domain = model!.registeredDomains[index];
-
-          return _DomainListItem(
-            model: domain,
-            highlight: domain.registeredDomain == machineId,
-            onDeactivate: onDeactivate,
-          );
-        },
-      );
-    }
-
-    return DecoratedBox(
-      decoration: const BoxDecoration(
-        border: Border.fromBorderSide(BorderSide()),
-      ),
-      child: content,
-    );
-  }
-}
-
-// ================================================
-class _LicenseKeyTextField extends StatelessWidget {
-  const _LicenseKeyTextField({
-    required this.textController,
-  });
-
-  final TextEditingController textController;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      decoration: const InputDecoration(
-        isDense: true,
-        hintText: 'License Key',
-      ),
-      keyboardType: TextInputType.text,
-      autofocus: true,
-      textInputAction: TextInputAction.done,
-      controller: textController,
-    );
-  }
-}
-
-// ================================================
-
-class _EmailTextField extends StatelessWidget {
-  const _EmailTextField({
-    required this.textController,
-  });
-
-  final TextEditingController textController;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      decoration: const InputDecoration(
-        isDense: true,
-        hintText: 'Email',
-      ),
-      keyboardType: TextInputType.text,
-      autofocus: true,
-      textInputAction: TextInputAction.done,
-      controller: textController,
-    );
-  }
-}
-
-// ======================================================
-
-class _DomainListItem extends StatelessWidget {
-  const _DomainListItem({
-    required this.model,
-    required this.onDeactivate,
-    required this.highlight,
-  });
-
-  final RegisteredDomainModel model;
-  final void Function(String registeredDomain) onDeactivate;
-  final bool highlight;
-
-  @override
-  Widget build(BuildContext context) {
-    TextStyle? style;
-
-    if (highlight) {
-      style = TextStyle(color: context.primary);
-    }
-
-    return ListTile(
-      title: Text(
-        model.registeredDomain,
-        style: style,
-      ),
-      subtitle: Text(model.licKey),
-      trailing: DFIconButton(
-        tooltip: 'Deactivate',
-        icon: const Icon(Icons.clear),
-        onPressed: () async {
-          onDeactivate(model.registeredDomain);
-        },
-      ),
-    );
-  }
-}
-
 // ===================================================================
 
 class ActivateTab extends StatefulWidget {
@@ -382,6 +252,136 @@ class ActivateTabState extends State<ActivateTab> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: children,
+    );
+  }
+}
+
+// ===============================================================
+
+class _ActivationTable extends StatelessWidget {
+  const _ActivationTable({
+    required this.onDeactivate,
+    required this.model,
+    required this.machineId,
+  });
+
+  final void Function(String registeredDomain) onDeactivate;
+  final LicenseKeyModel? model;
+  final String machineId;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget content;
+
+    if (model == null || model!.registeredDomains.isEmpty) {
+      content = const NothingFound(
+        message: 'No Activations',
+      );
+    } else {
+      content = ListView.builder(
+        itemCount: model!.registeredDomains.length,
+        itemBuilder: (context, index) {
+          final domain = model!.registeredDomains[index];
+
+          return _DomainListItem(
+            model: domain,
+            highlight: domain.registeredDomain == machineId,
+            onDeactivate: onDeactivate,
+          );
+        },
+      );
+    }
+
+    return DecoratedBox(
+      decoration: const BoxDecoration(
+        border: Border.fromBorderSide(BorderSide()),
+      ),
+      child: content,
+    );
+  }
+}
+
+// ================================================
+class _LicenseKeyTextField extends StatelessWidget {
+  const _LicenseKeyTextField({
+    required this.textController,
+  });
+
+  final TextEditingController textController;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      decoration: const InputDecoration(
+        isDense: true,
+        hintText: 'License Key',
+      ),
+      keyboardType: TextInputType.text,
+      autofocus: true,
+      textInputAction: TextInputAction.done,
+      controller: textController,
+    );
+  }
+}
+
+// ================================================
+
+class _EmailTextField extends StatelessWidget {
+  const _EmailTextField({
+    required this.textController,
+  });
+
+  final TextEditingController textController;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      decoration: const InputDecoration(
+        isDense: true,
+        hintText: 'Email',
+      ),
+      keyboardType: TextInputType.text,
+      autofocus: true,
+      textInputAction: TextInputAction.done,
+      controller: textController,
+    );
+  }
+}
+
+// ======================================================
+
+class _DomainListItem extends StatelessWidget {
+  const _DomainListItem({
+    required this.model,
+    required this.onDeactivate,
+    required this.highlight,
+  });
+
+  final RegisteredDomainModel model;
+  final void Function(String registeredDomain) onDeactivate;
+  final bool highlight;
+
+  @override
+  Widget build(BuildContext context) {
+    TextStyle? style;
+
+    if (highlight) {
+      style = TextStyle(color: context.primary);
+    }
+
+    return ListTile(
+      title: Text(
+        model.registeredDomain,
+        style: style,
+      ),
+      subtitle: Text(model.licKey),
+      trailing: DFIconButton(
+        tooltip: 'Deactivate',
+        icon: const Icon(Icons.clear),
+        onPressed: () async {
+          onDeactivate(model.registeredDomain);
+        },
+      ),
     );
   }
 }
