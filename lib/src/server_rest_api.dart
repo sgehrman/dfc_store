@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart';
-import 'package:dfc_store/src/license_key_model.dart';
-import 'package:dfc_store/src/license_response_model.dart';
+import 'package:dfc_store/src/models/license_key_model.dart';
+import 'package:dfc_store/src/models/license_response_model.dart';
 import 'package:http/http.dart' as http;
 
 class ServerRestApi {

@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
-import 'package:dfc_store/src/license_response_model.dart';
-import 'package:dfc_store/src/registered_domain_model.dart';
+import 'package:dfc_store/src/models/license_response_model.dart';
+import 'package:dfc_store/src/models/registered_domain_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'license_key_model.g.dart';

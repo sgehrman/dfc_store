@@ -1,6 +1,5 @@
 import 'package:admin_app/dialogs/json_dialog.dart';
 import 'package:admin_app/dialogs/shared/widget_dialog.dart';
-import 'package:admin_app/misc/license_cache.dart';
 import 'package:admin_app/misc/prefs.dart';
 import 'package:dfc_flutter/dfc_flutter_web.dart';
 import 'package:dfc_store/dfc_store.dart';
@@ -32,12 +31,12 @@ Future<void> showActivateDialog({
 
 class _ActivationTable extends StatelessWidget {
   const _ActivationTable({
-    required this.onChanged,
+    required this.onDeactivate,
     required this.model,
     required this.machineId,
   });
 
-  final void Function() onChanged;
+  final void Function(String registeredDomain) onDeactivate;
   final LicenseKeyModel? model;
   final String machineId;
 
@@ -58,7 +57,7 @@ class _ActivationTable extends StatelessWidget {
           return _DomainListItem(
             model: domain,
             highlight: domain.registeredDomain == machineId,
-            onChanged: onChanged,
+            onDeactivate: onDeactivate,
           );
         },
       );
@@ -125,12 +124,12 @@ class _EmailTextField extends StatelessWidget {
 class _DomainListItem extends StatelessWidget {
   const _DomainListItem({
     required this.model,
-    required this.onChanged,
+    required this.onDeactivate,
     required this.highlight,
   });
 
   final RegisteredDomainModel model;
-  final void Function() onChanged;
+  final void Function(String registeredDomain) onDeactivate;
   final bool highlight;
 
   @override
@@ -151,16 +150,7 @@ class _DomainListItem extends StatelessWidget {
         tooltip: 'Deactivate',
         icon: const Icon(Icons.clear),
         onPressed: () async {
-          final result = await ServerRestApi.deactivate(
-            domain: model.registeredDomain,
-            webDomain: Prefs.webDomain,
-            licenseKey: model.licKey,
-            licenseVerificationKey: Prefs.verifySecret,
-          );
-
-          print(result);
-
-          onChanged();
+          onDeactivate(model.registeredDomain);
         },
       ),
     );
@@ -184,105 +174,67 @@ class ActivateTabState extends State<ActivateTab> {
   final _licenseKeyController = TextEditingController();
   final _emailController = TextEditingController();
 
+  late LicenseKeyManager _keyMgr;
+
   @override
   void initState() {
     super.initState();
+
+    _licenseKeyController.text = Prefs.licenseKey;
+    _emailController.text = Prefs.email;
+
+    _keyMgr = LicenseKeyManager(
+      () {
+        final result = LicenseManagerParams(
+          useEmail: true,
+          verifySecret: Prefs.verifySecret,
+          machineId: Prefs.machineId,
+          licenseKey: _licenseKeyController.text,
+          webDomain: Prefs.webDomain,
+          email: _emailController.text,
+        );
+
+        // save prefs here
+        Prefs.licenseKey = result.licenseKey;
+        Prefs.email = result.email;
+
+        return result;
+      },
+    );
 
     _setup();
   }
 
   Future<void> _setup() async {
-    _licenseKeyController.text = Prefs.licenseKey;
-    _emailController.text = Prefs.email;
-
-    await _reloadLicenseKey();
-  }
-
-  bool _isActivated() {
-    final model = _currentModel();
-
-    if (model != null) {
-      // save email
-      Prefs.email = _emailController.text;
-
-      return model.checkAll(
-        licenseKey: _licenseKeyController.text,
-        email: _emailController.text,
-        machineId: Prefs.machineId,
-      );
-    }
-
-    return false;
-  }
-
-  Future<void> _activate({required bool activate}) async {
-    // make sure they didn't change the license text, reload first
-    await _reloadLicenseKey();
-
-    // could have a sitution where the user just puts in their email/license
-    // and the button says activate, but this would deactiate them if they hit the button
-    if (activate != _isActivated()) {
-      final model = _currentModel();
-
-      // make sure the license is valid and the email matches
-      if (model != null &&
-          model.checkLicenseAndEmail(
-            licenseKey: _licenseKeyController.text,
-            email: _emailController.text,
-          )) {
-        if (!_isActivated()) {
-          await ServerRestApi.activate(
-            licenseKey: _licenseKeyController.text,
-            domain: Prefs.machineId,
-            licenseVerificationKey: Prefs.verifySecret,
-            webDomain: Prefs.webDomain,
-          );
-
-          if (_isActivated()) {
-            Utils.successSnackbar(
-              title: 'Success',
-              message: 'Activated',
-            );
-          }
-        } else {
-          final model = _currentModel();
-
-          if (model != null) {
-            await ServerRestApi.deactivate(
-              webDomain: Prefs.webDomain,
-              domain: Prefs.machineId,
-              licenseKey: model.licenseKey,
-              licenseVerificationKey: Prefs.verifySecret,
-            );
-
-            if (!_isActivated()) {
-              Utils.successSnackbar(
-                title: 'Success',
-                message: 'Deactivated',
-              );
-            }
-          }
-        }
-
-        // reload and update UI based on activate/deactivate
-        // this calls setState
-        await _reloadLicenseKey();
-      }
-    }
-  }
-
-  Future<void> _reloadLicenseKey() async {
-    await LicenseCache.loadLicenseKey(_licenseKeyController.text);
+    await _keyMgr.loadModel();
 
     if (mounted) {
       setState(() {});
     }
   }
 
-  Future<void> _checkIfActivated() async {
-    await _reloadLicenseKey();
+  Future<void> _activate({required bool activate}) async {
+    final success = await _keyMgr.activate(
+      activate: activate,
+      machineId: Prefs.machineId,
+    );
 
-    if (_isActivated()) {
+    if (success) {
+      Utils.successSnackbar(
+        title: 'Success',
+        message: activate ? 'Activated' : 'Deactivated',
+      );
+
+      if (mounted) {
+        setState(() {});
+      }
+    }
+  }
+
+  Future<void> _checkIfActivated() async {
+    await _keyMgr.isActivatedAsync();
+
+    if (_keyMgr.isActivated()) {
       Utils.successSnackbar(
         title: 'Success',
         message: 'Activated',
@@ -296,10 +248,6 @@ class ActivateTabState extends State<ActivateTab> {
     }
   }
 
-  LicenseKeyModel? _currentModel() {
-    return LicenseCache.shared.get(licenseKey: _licenseKeyController.text);
-  }
-
   Widget _checkButton() {
     return Wrap(
       alignment: WrapAlignment.end,
@@ -307,7 +255,7 @@ class ActivateTabState extends State<ActivateTab> {
         DFIconButton(
           icon: const Icon(Icons.info_outline),
           onPressed: () {
-            final model = _currentModel();
+            final model = _keyMgr.currentModel();
 
             showJsonDialog(
               context: context,
@@ -328,7 +276,7 @@ class ActivateTabState extends State<ActivateTab> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> children = [];
-    final model = _currentModel();
+    final model = _keyMgr.currentModel();
 
     if (model == null) {
       return const NothingWidget();
@@ -339,7 +287,7 @@ class ActivateTabState extends State<ActivateTab> {
 
     final activations = '$used/$total';
 
-    if (_isActivated()) {
+    if (_keyMgr.isActivated()) {
       final expireDate = DateTime.tryParse(model.dateExpiry);
       String expiresString = '';
       if (expireDate != null) {
@@ -387,7 +335,7 @@ class ActivateTabState extends State<ActivateTab> {
       }
     }
 
-    final isActivated = _isActivated();
+    final isActivated = _keyMgr.isActivated();
 
     children.addAll([
       const SizedBox(height: 20),
@@ -409,7 +357,16 @@ class ActivateTabState extends State<ActivateTab> {
         child: _ActivationTable(
           model: model,
           machineId: Prefs.machineId,
-          onChanged: _reloadLicenseKey,
+          onDeactivate: (domain) async {
+            await _keyMgr.activate(
+              activate: false,
+              machineId: domain,
+            );
+
+            if (mounted) {
+              setState(() {});
+            }
+          },
         ),
       ),
       const SizedBox(height: 8),
