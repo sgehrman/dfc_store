@@ -63,40 +63,35 @@ class LicenseKeyModel extends LicenseResponseModel {
   final String txnId;
   final String subscrId;
 
-// currently Deckr doesn't check if email matches, but PF does.
   bool check({
     required String licenseKey,
     required String machineId,
+    String email = '', // pass in email to check that too
   }) {
-    return checkLicense(licenseKey: licenseKey) &&
+    bool result = isSuccess &&
+        isActive &&
+        this.licenseKey == licenseKey &&
         isRegistedOnDomain(machineId);
+
+    if (result && email.isNotEmpty) {
+      // case sensitive? fix?
+      result = email == this.email;
+    }
+
+    return result;
   }
 
-  // makes sure email entered matches the purchasing email
-  bool checkAll({
-    required String licenseKey,
-    required String email,
-    required String machineId,
-  }) {
-    return check(
-          licenseKey: licenseKey,
-          machineId: machineId,
-        ) &&
-        this.email == email;
-  }
-
-  // make sure license is active and the email matches
-  bool checkLicenseAndEmail({
+  bool verifyLicenseAndEmail({
     required String licenseKey,
     required String email,
   }) {
-    return checkLicense(licenseKey: licenseKey) && this.email == email;
+    return this.licenseKey == licenseKey && this.email == email;
   }
 
-  bool checkLicense({
+  bool verifyLicense({
     required String licenseKey,
   }) {
-    return isSuccess && isActive && this.licenseKey == licenseKey;
+    return this.licenseKey == licenseKey;
   }
 
   bool isRegistedOnDomain(String domain) {

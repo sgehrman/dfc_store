@@ -1,4 +1,5 @@
 import 'package:dfc_store/src/models/license_key_model.dart';
+import 'package:dfc_store/src/models/license_response_model.dart';
 import 'package:dfc_store/src/server_rest_api.dart';
 
 class LicenseManagerParams {
@@ -59,24 +60,18 @@ class LicenseKeyManager {
   Future<bool> isActivatedAsync() async {
     await loadModel();
 
-    return isActivated();
+    return isActivated(machineId: _params.machineId);
   }
 
-  bool isActivated() {
+  // machineId is to ask anther machine's activation is activated (when deactiting in the list)
+  bool isActivated({String machineId = ''}) {
     final model = currentModel();
 
     if (model != null) {
-      if (_params.useEmail) {
-        return model.checkAll(
-          licenseKey: _params.licenseKey,
-          email: _params.email,
-          machineId: _params.machineId,
-        );
-      }
-
       return model.check(
         licenseKey: _params.licenseKey,
-        machineId: _params.machineId,
+        email: _params.useEmail ? _params.email : '',
+        machineId: machineId.isNotEmpty ? machineId : _params.machineId,
       );
     }
 
@@ -95,7 +90,7 @@ class LicenseKeyManager {
     }
   }
 
-  Future<bool> activate({
+  Future<LicenseResponseModel> activate({
     required bool activate,
     required String machineId,
   }) async {
@@ -104,7 +99,7 @@ class LicenseKeyManager {
 
     // could have a sitution where the user just puts in their email/license
     // and the button says activate, but this would deactiate them if they hit the button
-    if (activate != isActivated()) {
+    if (activate != isActivated(machineId: machineId)) {
       final model = currentModel();
 
       if (model != null) {
@@ -112,17 +107,19 @@ class LicenseKeyManager {
 
         // check to see if model is valid and license keys and or emails match before trying
         if (_params.useEmail) {
-          modelOK = model.checkLicenseAndEmail(
+          modelOK = model.verifyLicenseAndEmail(
             licenseKey: _params.licenseKey,
             email: _params.email,
           );
         } else {
-          modelOK = model.checkLicense(licenseKey: _params.licenseKey);
+          modelOK = model.verifyLicense(licenseKey: _params.licenseKey);
         }
 
         if (modelOK) {
-          if (!isActivated()) {
-            await ServerRestApi.activate(
+          LicenseResponseModel result;
+
+          if (!isActivated(machineId: machineId)) {
+            result = await ServerRestApi.activate(
               licenseKey: _params.licenseKey,
               domain: machineId,
               licenseVerificationKey: _params.verifySecret,
@@ -130,12 +127,8 @@ class LicenseKeyManager {
             );
 
             await loadModel();
-
-            if (isActivated()) {
-              return true;
-            }
           } else {
-            await ServerRestApi.deactivate(
+            result = await ServerRestApi.deactivate(
               webDomain: _params.webDomain,
               domain: machineId,
               licenseKey: model.licenseKey,
@@ -143,18 +136,14 @@ class LicenseKeyManager {
             );
 
             await loadModel();
-
-            if (!isActivated()) {
-              return true;
-            }
           }
 
-          return false;
+          return result;
         }
       }
     }
 
-    return true;
+    return LicenseResponseModel.success();
   }
 
   // --------------------------------------

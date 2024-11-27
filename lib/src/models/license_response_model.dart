@@ -17,13 +17,14 @@ class LicenseResponseModel {
   factory LicenseResponseModel.fromJson(Map<String, dynamic> json) =>
       _$LicenseResponseModelFromJson(json);
 
-  factory LicenseResponseModel.error() {
-    return const LicenseResponseModel(
-      message: 'Error',
-      result: 'error',
-      errorCode: 69,
-    );
-  }
+  LicenseResponseModel.error()
+      : message = 'Error',
+        result = 'error',
+        errorCode = 69;
+  LicenseResponseModel.success()
+      : message = 'Success',
+        result = 'success',
+        errorCode = 0;
 
   final String result; // 'success', 'error'
   final int errorCode;

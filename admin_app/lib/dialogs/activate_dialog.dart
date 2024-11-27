@@ -214,12 +214,12 @@ class ActivateTabState extends State<ActivateTab> {
   }
 
   Future<void> _activate({required bool activate}) async {
-    final success = await _keyMgr.activate(
+    final result = await _keyMgr.activate(
       activate: activate,
       machineId: Prefs.machineId,
     );
 
-    if (success) {
+    if (result.isSuccess) {
       Utils.successSnackbar(
         title: 'Success',
         message: activate ? 'Activated' : 'Deactivated',
@@ -228,6 +228,12 @@ class ActivateTabState extends State<ActivateTab> {
       if (mounted) {
         setState(() {});
       }
+    } else {
+      Utils.successSnackbar(
+        title: 'Error',
+        message: '${result.message} - ${result.result} ${result.errorCode}',
+        error: true,
+      );
     }
   }
 
@@ -278,63 +284,6 @@ class ActivateTabState extends State<ActivateTab> {
     final List<Widget> children = [];
     final model = _keyMgr.currentModel();
 
-    if (model == null) {
-      return const NothingWidget();
-    }
-
-    final used = model.registeredDomains.length;
-    final total = int.tryParse(model.maxAllowedDomains) ?? 0;
-
-    final activations = '$used/$total';
-
-    if (_keyMgr.isActivated()) {
-      final expireDate = DateTime.tryParse(model.dateExpiry);
-      String expiresString = '';
-      if (expireDate != null) {
-        final formatter = DateFormat('MM-dd-y');
-        final dateString = formatter.format(expireDate);
-
-        expiresString = 'Expires: $dateString';
-      }
-      children.addAll([
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text22(
-              'License Activated',
-              color: context.primary,
-            ),
-            Text16(
-              expiresString,
-              bold: false,
-            ),
-          ],
-        ),
-      ]);
-    } else {
-      children.addAll([
-        Text22(
-          'Enter Your License Key And Click Activate',
-        ),
-      ]);
-
-      if (model.isBlocked) {
-        children.addAll([
-          const SizedBox(height: 20),
-          Text22(
-            'License Blocked',
-          ),
-        ]);
-      } else if (model.isExpired) {
-        children.addAll([
-          const SizedBox(height: 20),
-          Text22(
-            'License Expired',
-          ),
-        ]);
-      }
-    }
-
     final isActivated = _keyMgr.isActivated();
 
     children.addAll([
@@ -345,7 +294,7 @@ class ActivateTabState extends State<ActivateTab> {
       const SizedBox(height: 10),
       _EmailTextField(textController: _emailController),
       const SizedBox(height: 20),
-      DFTextButton(
+      DFButton(
         label: isActivated ? 'Deactivate' : 'Activate',
         onPressed: () => _activate(activate: !isActivated),
       ),
@@ -353,30 +302,82 @@ class ActivateTabState extends State<ActivateTab> {
       Text16('Machine ID'),
       Text(Prefs.machineId),
       const SizedBox(height: 20),
-      Expanded(
-        child: _ActivationTable(
-          model: model,
-          machineId: Prefs.machineId,
-          onDeactivate: (domain) async {
-            await _keyMgr.activate(
-              activate: false,
-              machineId: domain,
-            );
-
-            if (mounted) {
-              setState(() {});
-            }
-          },
-        ),
-      ),
-      const SizedBox(height: 8),
-      Text16(
-        'Activations $activations',
-        bold: false,
-      ),
-      const SizedBox(height: 20),
-      _checkButton(),
     ]);
+
+    if (model != null) {
+      final used = model.registeredDomains.length;
+      final total = int.tryParse(model.maxAllowedDomains) ?? 0;
+
+      final activations = '$used/$total';
+
+      if (isActivated) {
+        final expireDate = DateTime.tryParse(model.dateExpiry);
+        String expiresString = '';
+        if (expireDate != null) {
+          final formatter = DateFormat('MM-dd-y');
+          final dateString = formatter.format(expireDate);
+
+          expiresString = 'Expires: $dateString';
+        }
+        children.addAll([
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text22(
+                'License Activated',
+                color: context.primary,
+              ),
+              Text16(
+                expiresString,
+                bold: false,
+              ),
+            ],
+          ),
+        ]);
+      } else {
+        if (model.isBlocked) {
+          children.addAll([
+            const SizedBox(height: 20),
+            Text22(
+              'License Blocked',
+            ),
+          ]);
+        } else if (model.isExpired) {
+          children.addAll([
+            const SizedBox(height: 20),
+            Text22(
+              'License Expired',
+            ),
+          ]);
+        }
+      }
+
+      children.addAll([
+        Expanded(
+          child: _ActivationTable(
+            model: model,
+            machineId: Prefs.machineId,
+            onDeactivate: (domain) async {
+              await _keyMgr.activate(
+                activate: false,
+                machineId: domain,
+              );
+
+              if (mounted) {
+                setState(() {});
+              }
+            },
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text16(
+          'Activations $activations',
+          bold: false,
+        ),
+        const SizedBox(height: 20),
+        _checkButton(),
+      ]);
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
