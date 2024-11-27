@@ -55,6 +55,19 @@ class LicenseKeyManager {
     return null;
   }
 
+  Future<LicenseKeyModel?> currentModelAsync() async {
+    if (paramsOK) {
+      final result = _cacheGet(licenseKey: _params.licenseKey);
+      if (result == null) {
+        await loadModel();
+      }
+
+      return _cacheGet(licenseKey: _params.licenseKey);
+    }
+
+    return null;
+  }
+
   // get fresh copy of model
   // ### should we just confirm first if our models email/license keys match?
   Future<bool> isActivatedAsync() async {
@@ -94,15 +107,13 @@ class LicenseKeyManager {
     required bool activate,
     required String machineId,
   }) async {
-    // make sure they didn't change the license or email
-    await loadModel();
+    // this will load the model if null, so call this before isActivated()
+    final model = await currentModelAsync();
 
     // could have a sitution where the user just puts in their email/license
     // and the button says activate, but this would deactiate them if they hit the button
-    if (activate != isActivated(machineId: machineId)) {
-      final model = currentModel();
-
-      if (model != null) {
+    if (model != null) {
+      if (activate != isActivated(machineId: machineId)) {
         bool modelOK = false;
 
         // check to see if model is valid and license keys and or emails match before trying
