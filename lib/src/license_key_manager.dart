@@ -108,6 +108,7 @@ class LicenseKeyManager {
     required String machineId,
   }) async {
     // this will load the model if null, so call this before isActivated()
+    // user could have typed a new license key and we haven't loaded that model yet
     final model = await currentModelAsync();
 
     // could have a sitution where the user just puts in their email/license
@@ -116,14 +117,12 @@ class LicenseKeyManager {
       if (activate != isActivated(machineId: machineId)) {
         bool modelOK = false;
 
-        // check to see if model is valid and license keys and or emails match before trying
+        // check to see if emails match before trying (if we care about emails)
         if (_params.useEmail) {
           modelOK = model.verifyLicenseAndEmail(
             licenseKey: _params.licenseKey,
             email: _params.email,
           );
-        } else {
-          modelOK = model.verifyLicense(licenseKey: _params.licenseKey);
         }
 
         if (modelOK) {
