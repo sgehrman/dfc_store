@@ -34,7 +34,7 @@ class _AdminWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const LicenseKeyForm(restUrl: '');
+    return const LicenseKeyForm();
   }
 }
 
@@ -42,11 +42,8 @@ class _AdminWidget extends StatelessWidget {
 
 class LicenseKeyForm extends StatefulWidget {
   const LicenseKeyForm({
-    required this.restUrl,
     super.key,
   });
-
-  final String restUrl;
 
   @override
   State<LicenseKeyForm> createState() => _LicenseKeyFormState();
@@ -96,7 +93,7 @@ class _LicenseKeyFormState extends State<LicenseKeyForm> {
       setState(() {});
 
       final success = await ServerRestApi.sendLicenseKey(
-        restUrl: widget.restUrl,
+        restUrl: Prefs.restUrl,
         email: email,
         firstName: firstName,
         lastName: lastName,
