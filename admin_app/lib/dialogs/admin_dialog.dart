@@ -53,6 +53,7 @@ class _LicenseKeyFormState extends State<LicenseKeyForm> {
   final _formKey =
       GlobalKey<FormBuilderState>(debugLabel: '_formKey: SignInForm');
   late Map<String, dynamic> _initialValue;
+  AutovalidateMode _validateMode = AutovalidateMode.disabled;
 
   @override
   void initState() {
@@ -86,11 +87,13 @@ class _LicenseKeyFormState extends State<LicenseKeyForm> {
       final firstName = state.value['firstName'] as String? ?? '';
       final lastName = state.value['lastName'] as String? ?? '';
 
+      _validateMode = AutovalidateMode.disabled;
+
       // clear out email and toast
-      state.fields['firstName']?.didChange('');
-      state.fields['lastName']?.didChange('');
-      state.fields['email']?.didChange('');
-      setState(() {});
+      // state.fields['firstName']?.didChange('');
+      // state.fields['lastName']?.didChange('');
+      // state.fields['email']?.didChange('');
+      // setState(() {});
 
       final success = await ServerRestApi.sendLicenseKey(
         restUrl: Prefs.restUrl,
@@ -114,6 +117,8 @@ class _LicenseKeyFormState extends State<LicenseKeyForm> {
       }
 
       print('$firstName $lastName, $email');
+    } else {
+      _validateMode = AutovalidateMode.onUserInteraction;
     }
   }
 
@@ -129,7 +134,7 @@ class _LicenseKeyFormState extends State<LicenseKeyForm> {
           ),
           const SizedBox(height: 20),
           FormBuilder(
-            autovalidateMode: AutovalidateMode.onUserInteraction,
+            autovalidateMode: _validateMode,
             key: _formKey,
             initialValue: _initialValue,
             child: Column(
@@ -137,6 +142,7 @@ class _LicenseKeyFormState extends State<LicenseKeyForm> {
               children: [
                 FormBuilderTextField(
                   name: 'email',
+                  autofocus: true,
                   autocorrect: false,
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,

@@ -266,6 +266,8 @@ class ServerRestApi {
           },
         );
 
+        print(response);
+
         if (response['result'] == 'ok') {
           return true;
         }
