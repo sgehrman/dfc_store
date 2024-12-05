@@ -266,6 +266,8 @@ class ServerRestApi {
           },
         );
 
+        // flutter: {result: ok, message: , error_code: 0, license_key: PFK_6750ed7832c76, email: milke@cocoatech.com}
+
         print(response);
 
         if (response['result'] == 'ok') {
