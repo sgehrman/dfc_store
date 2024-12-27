@@ -36,7 +36,7 @@ class BaseDialogRoute<T> extends ModalRoute<T> {
   bool get barrierDismissible => true;
 
   @override
-  Color get barrierColor => Colors.black.withOpacity(_fontMode ? 0 : 0.5);
+  Color get barrierColor => Colors.black.withValues(alpha: _fontMode ? 0 : 0.5);
 
   @override
   String get barrierLabel => '';

@@ -63,10 +63,10 @@ class Styles {
   }
 
   static Color lightPrimary(BuildContext context, {double opacity = 0.4}) =>
-      Theme.of(context).colorScheme.primary.withOpacity(opacity);
+      Theme.of(context).colorScheme.primary.withValues(alpha: opacity);
 
   static Color dimTextColor(BuildContext context) =>
-      Theme.of(context).textTheme.bodyMedium!.color!.withOpacity(0.5);
+      Theme.of(context).textTheme.bodyMedium!.color!.withValues(alpha: 0.5);
 
   static const spaceBetweenButtons = 20.0;
 
