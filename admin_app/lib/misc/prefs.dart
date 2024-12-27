@@ -1,115 +1,153 @@
+import 'package:admin_app/misc/prefs_dot_com.dart';
+import 'package:admin_app/misc/prefs_dot_io.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart';
 
 class Prefs {
   // ----------------------------------------------------
-  // restUrl
+  // .com or .io
 
-  static const String kRestUrlPrefKey = 'rest-url';
-  static String get restUrl => Preferences().stringPref(
-        key: kRestUrlPrefKey,
-        // defaultValue: '',
+  static const String kUseCocoatechDotComPrefKey = 'use-cocoatech-dot-com';
+  static bool get useCocoatechDotCom => Preferences().boolPref(
+        key: kUseCocoatechDotComPrefKey,
       );
 
-  static set restUrl(String value) {
-    Preferences().setStringPref(
-      key: kRestUrlPrefKey,
+  static set useCocoatechDotCom(bool value) {
+    Preferences().setBoolPref(
+      key: kUseCocoatechDotComPrefKey,
       value: value,
     );
+  }
+
+  // ----------------------------------------------------
+  // restUrl
+
+  static String get restUrl {
+    if (useCocoatechDotCom) {
+      return PrefsDotCom.restUrl;
+    }
+
+    return PrefsDotIo.restUrl;
+  }
+
+  static set restUrl(String value) {
+    if (useCocoatechDotCom) {
+      PrefsDotCom.restUrl = value;
+    } else {
+      PrefsDotIo.restUrl = value;
+    }
   }
 
   // ----------------------------------------------------
   // webDomain
 
-  static const String kWebDomainPrefKey = 'web-domain';
-  static String get webDomain => Preferences().stringPref(
-        key: kWebDomainPrefKey,
-        // defaultValue: '',
-      );
+  static String get webDomain {
+    if (useCocoatechDotCom) {
+      return PrefsDotCom.webDomain;
+    }
+
+    return PrefsDotIo.webDomain;
+  }
 
   static set webDomain(String value) {
-    Preferences().setStringPref(
-      key: kWebDomainPrefKey,
-      value: value,
-    );
+    if (useCocoatechDotCom) {
+      PrefsDotCom.webDomain = value;
+    } else {
+      PrefsDotIo.webDomain = value;
+    }
   }
 
   // ----------------------------------------------------
   // apiPassword
 
-  static const String kApiPasswordPrefKey = 'password';
-  static String get apiPassword => Preferences().stringPref(
-        key: kApiPasswordPrefKey,
-        // defaultValue: '',
-      );
+  static String get apiPassword {
+    if (useCocoatechDotCom) {
+      return PrefsDotCom.apiPassword;
+    }
+
+    return PrefsDotIo.apiPassword;
+  }
 
   static set apiPassword(String value) {
-    Preferences().setStringPref(
-      key: kApiPasswordPrefKey,
-      value: value,
-    );
+    if (useCocoatechDotCom) {
+      PrefsDotCom.apiPassword = value;
+    } else {
+      PrefsDotIo.apiPassword = value;
+    }
   }
 
   // ----------------------------------------------------
   // verifySecret
 
-  static const String kVerifySecretPrefKey = 'verify-secret';
-  static String get verifySecret => Preferences().stringPref(
-        key: kVerifySecretPrefKey,
-        // defaultValue: '',
-      );
+  static String get verifySecret {
+    if (useCocoatechDotCom) {
+      return PrefsDotCom.verifySecret;
+    }
+
+    return PrefsDotIo.verifySecret;
+  }
 
   static set verifySecret(String value) {
-    Preferences().setStringPref(
-      key: kVerifySecretPrefKey,
-      value: value,
-    );
+    if (useCocoatechDotCom) {
+      PrefsDotCom.verifySecret = value;
+    } else {
+      PrefsDotIo.verifySecret = value;
+    }
   }
 
   // ----------------------------------------------------
   // licenseKey
 
-  static const String kLicenseKeyPrefKey = 'license-key';
-  static String get licenseKey => Preferences().stringPref(
-        key: kLicenseKeyPrefKey,
-        // defaultValue: '',
-      );
+  static String get licenseKey {
+    if (useCocoatechDotCom) {
+      return PrefsDotCom.licenseKey;
+    }
+
+    return PrefsDotIo.licenseKey;
+  }
 
   static set licenseKey(String value) {
-    Preferences().setStringPref(
-      key: kLicenseKeyPrefKey,
-      value: value,
-    );
+    if (useCocoatechDotCom) {
+      PrefsDotCom.licenseKey = value;
+    } else {
+      PrefsDotIo.licenseKey = value;
+    }
   }
 
   // ----------------------------------------------------
   // email
 
-  static const String kEmailPrefKey = 'email-key';
-  static String get email => Preferences().stringPref(
-        key: kEmailPrefKey,
-        // defaultValue: '',
-      );
+  static String get email {
+    if (useCocoatechDotCom) {
+      return PrefsDotCom.email;
+    }
+
+    return PrefsDotIo.email;
+  }
 
   static set email(String value) {
-    Preferences().setStringPref(
-      key: kEmailPrefKey,
-      value: value,
-    );
+    if (useCocoatechDotCom) {
+      PrefsDotCom.email = value;
+    } else {
+      PrefsDotIo.email = value;
+    }
   }
 
   // ----------------------------------------------------
   // machineId
 
-  static const String kMachineIdPrefKey = 'machine-id';
-  static String get machineId => Preferences().stringPref(
-        key: kMachineIdPrefKey,
-        defaultValue: '2024-mac-pro-1234',
-      );
+  static String get machineId {
+    if (useCocoatechDotCom) {
+      return PrefsDotCom.machineId;
+    }
+
+    return PrefsDotIo.machineId;
+  }
 
   static set machineId(String value) {
-    Preferences().setStringPref(
-      key: kMachineIdPrefKey,
-      value: value,
-    );
+    if (useCocoatechDotCom) {
+      PrefsDotCom.machineId = value;
+    } else {
+      PrefsDotIo.machineId = value;
+    }
   }
 }

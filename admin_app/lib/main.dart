@@ -2,6 +2,7 @@ import 'package:admin_app/dialogs/activate_dialog.dart';
 import 'package:admin_app/dialogs/admin_dialog.dart';
 import 'package:admin_app/dialogs/lost_license_form.dart';
 import 'package:admin_app/dialogs/settings.dart';
+import 'package:admin_app/misc/prefs.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
           // SharedContext is for snackbars
           SharedContext().mainContext = context;
 
-          return const MyHomePage(title: 'Admin App Home Page');
+          return const MyHomePage();
         },
       },
       localizationsDelegates: const [
@@ -43,11 +44,8 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({
-    required this.title,
     super.key,
   });
-
-  final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -59,8 +57,17 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title:
+            Text(Prefs.useCocoatechDotCom ? 'Cocoatech.com' : 'Cocoatech.io'),
         actions: [
+          Switch(
+            value: Prefs.useCocoatechDotCom,
+            onChanged: (value) {
+              Prefs.useCocoatechDotCom = value;
+
+              setState(() {});
+            },
+          ),
           IconButton(
             onPressed: () {
               showSettingsDialog(
