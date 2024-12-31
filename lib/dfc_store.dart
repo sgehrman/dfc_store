@@ -1,5 +1,3 @@
-library dfc_store;
-
 export 'src/license_key_manager.dart';
 export 'src/models/license_key_model.dart';
 export 'src/models/license_response_model.dart';

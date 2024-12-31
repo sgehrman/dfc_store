@@ -12,9 +12,9 @@ part 'license_key_model.g.dart';
 )
 class LicenseKeyModel extends LicenseResponseModel {
   const LicenseKeyModel({
-    required String result,
-    required String message,
-    int errorCode = 0,
+    required super.result,
+    required super.message,
+    super.errorCode,
     this.licenseKey = '',
     this.status = '',
     this.maxAllowedDomains = '',
@@ -29,11 +29,7 @@ class LicenseKeyModel extends LicenseResponseModel {
     this.lastName = '',
     this.txnId = '',
     this.subscrId = '',
-  }) : super(
-          message: message,
-          result: result,
-          errorCode: errorCode,
-        );
+  });
 
   factory LicenseKeyModel.error() {
     final base = LicenseResponseModel.error();
