@@ -207,12 +207,12 @@ class ServerRestApi {
     required String version,
   }) async {
     try {
-      final contents = 'ISSUE:\n$issue\n\n'
+      final contents = 'SUBJECT:\n$subject\n\n'
+          'MESSAGE:\n$message\n\n'
+          'ISSUE:\n$issue\n\n'
           'NAME:\n$name\n\n'
           'FROM:\n$email\n\n'
           'PURCHASE_EMAIL:\n$emailUsedToPurchase\n\n'
-          'SUBJECT:\n$subject\n\n'
-          'MESSAGE:\n$message\n\n'
           'STORE:\n$store\n\n'
           'MACOS:\n$macOS\n\n'
           'VERSION:\n$version\n\n'
