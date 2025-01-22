@@ -13,7 +13,7 @@ dependencies:
     git: https://github.com/sgehrman/dfc_flutter
   flutter:
     sdk: flutter
-  http: ^1.2.2
+  http: ^1.3.0
   json_annotation: ^4.9.0
 
 dev_dependencies:
@@ -23,6 +23,6 @@ dev_dependencies:
     git: https://github.com/rei-codes/dart-code-metrics
   dfc_lints:
     git: https://github.com/sgehrman/dfc_lints
-  json_serializable: ^6.9.2
+  json_serializable: ^6.9.3
 
 flutter:
