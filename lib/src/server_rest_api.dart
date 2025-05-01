@@ -109,7 +109,10 @@ class ServerRestApi {
 
       final result = json.decode(response.body) as Map<String, dynamic>? ?? {};
 
-      return result;
+      // TODO(SNG): need to display errors, this is bad
+      if (result['result'] == 'ok') {
+        return result;
+      }
     } catch (err) {
       print(err);
     }
