@@ -109,9 +109,7 @@ class ServerRestApi {
 
       final result = json.decode(response.body) as Map<String, dynamic>? ?? {};
 
-      if (result['result'] == 'ok') {
-        return result;
-      }
+      return result;
     } catch (err) {
       print(err);
     }
