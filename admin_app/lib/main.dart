@@ -1,9 +1,9 @@
 import 'package:admin_app/dialogs/activate_dialog.dart';
 import 'package:admin_app/dialogs/admin_dialog.dart';
-import 'package:admin_app/dialogs/lost_license_form.dart';
 import 'package:admin_app/dialogs/settings.dart';
 import 'package:admin_app/misc/prefs.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart';
+import 'package:dfc_store/dfc_store.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -32,20 +32,14 @@ class MyApp extends StatelessWidget {
           return const MyHomePage();
         },
       },
-      localizationsDelegates: const [
-        ...dfcFlutterLocDelegates,
-      ],
-      supportedLocales: const [
-        ...dfcFlutterLocales,
-      ],
+      localizationsDelegates: const [...dfcFlutterLocDelegates],
+      supportedLocales: const [...dfcFlutterLocales],
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({
-    super.key,
-  });
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -57,8 +51,9 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title:
-            Text(Prefs.useCocoatechDotCom ? 'Cocoatech.com' : 'Cocoatech.io'),
+        title: Text(
+          Prefs.useCocoatechDotCom ? 'Cocoatech.com' : 'Cocoatech.io',
+        ),
         actions: [
           Switch(
             value: Prefs.useCocoatechDotCom,
@@ -70,9 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           IconButton(
             onPressed: () {
-              showSettingsDialog(
-                context: context,
-              );
+              showSettingsDialog(context: context);
             },
             icon: const Icon(Icons.settings),
           ),
@@ -98,10 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               const SizedBox(height: 80),
               const Text('Lost License'),
-              LostLicenseForm(
-                restUrl: Prefs.restUrl,
-                isMobile: false,
-              ),
+              LostLicenseForm(restUrl: Prefs.restUrl, isMobile: false),
             ],
           ),
         ),

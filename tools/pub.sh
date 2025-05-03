@@ -1,5 +1,9 @@
 #!/bin/bash
 
-flutter pub upgrade --major-versions --tighten
+flutter pub upgrade  
+
+cd ./admin_app
+flutter pub upgrade  
+cd $OLDPWD
 
 echo '## all done'

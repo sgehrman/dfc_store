@@ -10,8 +10,9 @@ class Styles {
   static Color appBar(BuildContext context) =>
       const Color.fromRGBO(30, 30, 30, 1);
 
-  static List<BoxShadow> heroShadow(BuildContext context) =>
-      [const BoxShadow(blurRadius: 24)];
+  static List<BoxShadow> heroShadow(BuildContext context) => [
+    const BoxShadow(blurRadius: 24),
+  ];
 
   static const black = Colors.black87;
 
@@ -107,9 +108,7 @@ class Styles {
     final dark = Utils.isDarkMode(context);
 
     return BoxDecoration(
-      color: dark
-          ? const Color.fromRGBO(60, 60, 60, 1)
-          : Utils.lighten(context.primary, 0.53),
+      color: dark ? const Color.fromRGBO(60, 60, 60, 1) : context.lightPrimary,
       borderRadius:
           addBorder ? const BorderRadius.all(Radius.circular(12)) : null,
       border: addBorder ? Border.all(color: borderColor(context)) : null,
@@ -120,10 +119,7 @@ class Styles {
     final dark = Utils.isDarkMode(context);
 
     return [
-      BoxShadow(
-        color: dark ? Colors.black38 : Colors.black26,
-        blurRadius: 20,
-      ),
+      BoxShadow(color: dark ? Colors.black38 : Colors.black26, blurRadius: 20),
     ];
   }
 

@@ -23,8 +23,9 @@ class ServerRestApi {
       final response = await HttpUtils.httpGet(uri);
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
-        final map =
-            Map<String, dynamic>.from(json.decode(response.body) as Map? ?? {});
+        final map = Map<String, dynamic>.from(
+          json.decode(response.body) as Map? ?? {},
+        );
 
         return LicenseKeyModel.fromJson(map);
       }
@@ -53,8 +54,9 @@ class ServerRestApi {
     try {
       final response = await HttpUtils.httpGet(uri);
 
-      final map =
-          Map<String, dynamic>.from(json.decode(response.body) as Map? ?? {});
+      final map = Map<String, dynamic>.from(
+        json.decode(response.body) as Map? ?? {},
+      );
 
       return LicenseResponseModel.fromJson(map);
     } catch (err) {
@@ -82,8 +84,9 @@ class ServerRestApi {
     try {
       final response = await HttpUtils.httpGet(uri);
 
-      final map =
-          Map<String, dynamic>.from(json.decode(response.body) as Map? ?? {});
+      final map = Map<String, dynamic>.from(
+        json.decode(response.body) as Map? ?? {},
+      );
 
       return LicenseResponseModel.fromJson(map);
     } catch (err) {
@@ -116,12 +119,9 @@ class ServerRestApi {
   }
 
   static Future<List<String>> youTubeVideoIds(String restUrl) async {
-    final response = await postToRestApi(
-      restUrl,
-      {
-        'action': 'youtube_video_ids',
-      },
-    );
+    final response = await postToRestApi(restUrl, {
+      'action': 'youtube_video_ids',
+    });
 
     if (response['result'] == 'ok') {
       final videoIdsString = response['videoIds'] as String? ?? '';
@@ -134,12 +134,7 @@ class ServerRestApi {
   }
 
   static Future<ServerOptions> handleGetOptions(String restUrl) async {
-    final response = await postToRestApi(
-      restUrl,
-      {
-        'action': 'options',
-      },
-    );
+    final response = await postToRestApi(restUrl, {'action': 'options'});
 
     if (response['result'] == 'ok') {
       final options = response['options'] as Map<String, dynamic>? ?? {};
@@ -170,15 +165,12 @@ class ServerRestApi {
 
     if (trimmedEmail.isNotEmpty) {
       try {
-        final response = await postToRestApi(
-          restUrl,
-          {
-            'action': 'subscribe_to_newsletter',
-            'email': trimmedEmail,
-            'firstName': firstName.trim(),
-            'lastName': lastName.trim(),
-          },
-        );
+        final response = await postToRestApi(restUrl, {
+          'action': 'subscribe_to_newsletter',
+          'email': trimmedEmail,
+          'firstName': firstName.trim(),
+          'lastName': lastName.trim(),
+        });
 
         // print('subscribeToNewsletter $response');
 
@@ -209,7 +201,8 @@ class ServerRestApi {
     required String version,
   }) async {
     try {
-      final contents = 'SUBJECT:\n$subject\n\n'
+      final contents =
+          'SUBJECT:\n$subject\n\n'
           'MESSAGE:\n$message\n\n'
           'ISSUE:\n$issue\n\n'
           'NAME:\n$name\n\n'
@@ -225,14 +218,11 @@ class ServerRestApi {
 
         return true;
       } else {
-        final response = await postToRestApi(
-          restUrl,
-          {
-            'action': 'email_support',
-            'message': contents,
-            'subject': '${issue.toUpperCase()}: $subject',
-          },
-        );
+        final response = await postToRestApi(restUrl, {
+          'action': 'email_support',
+          'message': contents,
+          'subject': '${issue.toUpperCase()}: $subject',
+        });
 
         if (response['result'] == 'ok') {
           return true;
@@ -256,17 +246,14 @@ class ServerRestApi {
 
     if (trimmedEmail.isNotEmpty) {
       try {
-        final response = await postToRestApi(
-          restUrl,
-          {
-            'action': 'create',
-            'email': trimmedEmail,
-            'firstName': firstName.trim(),
-            'lastName': lastName.trim(),
-            'password': password.trim(),
-            'numUsers': 1,
-          },
-        );
+        final response = await postToRestApi(restUrl, {
+          'action': 'create',
+          'email': trimmedEmail,
+          'firstName': firstName.trim(),
+          'lastName': lastName.trim(),
+          'password': password.trim(),
+          'numUsers': 1,
+        });
 
         // print(response);
         // flutter: {result: ok, message: , error_code: 0, license_key: PFK_6750ed7832c76, email: milke@cocoatech.com}
@@ -293,16 +280,11 @@ class ServerRestApi {
 
     if (trimmedEmail.isNotEmpty) {
       try {
-        final response = await postToRestApi(
-          restUrl,
-          {
-            'action': 'lost_license',
-            'email': trimmedEmail,
-            'sendEmail': sendEmail,
-          },
-        );
-
-        return response;
+        return postToRestApi(restUrl, {
+          'action': 'lost_license',
+          'email': trimmedEmail,
+          'sendEmail': sendEmail,
+        });
       } catch (err) {
         print('ERROR: requestLostLicense $err');
       }

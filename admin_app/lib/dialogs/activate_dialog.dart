@@ -6,9 +6,7 @@ import 'package:dfc_store/dfc_store.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-Future<void> showActivateDialog({
-  required BuildContext context,
-}) {
+Future<void> showActivateDialog({required BuildContext context}) {
   return widgetDialog<List<String>>(
     context: context,
     dialogWidth: 700,
@@ -16,10 +14,7 @@ Future<void> showActivateDialog({
     builder: WidgetDialogContentBuilder(
       (keyboardNotifier, titleNotifier) => [
         Flexible(
-          child: SizedBox(
-            height: 1000,
-            child: ActivateTab(keyboardNotifier),
-          ),
+          child: SizedBox(height: 1000, child: ActivateTab(keyboardNotifier)),
         ),
       ],
     ),
@@ -30,9 +25,7 @@ Future<void> showActivateDialog({
 // ===================================================================
 
 class ActivateTab extends StatefulWidget {
-  const ActivateTab(
-    this.keyboardNotifier,
-  );
+  const ActivateTab(this.keyboardNotifier);
 
   final ValueNotifier<bool> keyboardNotifier;
 
@@ -53,24 +46,22 @@ class ActivateTabState extends State<ActivateTab> {
     _licenseKeyController.text = Prefs.licenseKey;
     _emailController.text = Prefs.email;
 
-    _keyMgr = LicenseKeyManager(
-      () {
-        final result = LicenseManagerParams(
-          useEmail: true,
-          verifySecret: Prefs.verifySecret,
-          machineId: Prefs.machineId,
-          licenseKey: _licenseKeyController.text,
-          webDomain: Prefs.webDomain,
-          email: _emailController.text,
-        );
+    _keyMgr = LicenseKeyManager(() {
+      final result = LicenseManagerParams(
+        useEmail: true,
+        verifySecret: Prefs.verifySecret,
+        machineId: Prefs.machineId,
+        licenseKey: _licenseKeyController.text,
+        webDomain: Prefs.webDomain,
+        email: _emailController.text,
+      );
 
-        // save prefs here
-        Prefs.licenseKey = result.licenseKey;
-        Prefs.email = result.email;
+      // save prefs here
+      Prefs.licenseKey = result.licenseKey;
+      Prefs.email = result.email;
 
-        return result;
-      },
-    );
+      return result;
+    });
 
     _setup();
   }
@@ -111,10 +102,7 @@ class ActivateTabState extends State<ActivateTab> {
     await _keyMgr.isActivatedAsync();
 
     if (_keyMgr.isActivated()) {
-      Utils.successSnackbar(
-        title: 'Success',
-        message: 'Activated',
-      );
+      Utils.successSnackbar(title: 'Success', message: 'Activated');
     } else {
       Utils.successSnackbar(
         title: 'Error',
@@ -141,10 +129,7 @@ class ActivateTabState extends State<ActivateTab> {
           },
         ),
         const SizedBox(width: 20),
-        DFOutlineButton(
-          label: 'Check',
-          onPressed: _checkIfActivated,
-        ),
+        DFOutlineButton(label: 'Check', onPressed: _checkIfActivated),
       ],
     );
   }
@@ -158,9 +143,7 @@ class ActivateTabState extends State<ActivateTab> {
 
     children.addAll([
       const SizedBox(height: 20),
-      _LicenseKeyTextField(
-        textController: _licenseKeyController,
-      ),
+      _LicenseKeyTextField(textController: _licenseKeyController),
       const SizedBox(height: 10),
       _EmailTextField(textController: _emailController),
       const SizedBox(height: 20),
@@ -193,14 +176,8 @@ class ActivateTabState extends State<ActivateTab> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text22(
-                'License Activated',
-                color: context.primary,
-              ),
-              Text16(
-                expiresString,
-                bold: false,
-              ),
+              Text22('License Activated', color: context.primary),
+              Text16(expiresString, bold: false),
             ],
           ),
         ]);
@@ -208,16 +185,12 @@ class ActivateTabState extends State<ActivateTab> {
         if (model.isBlocked) {
           children.addAll([
             const SizedBox(height: 20),
-            Text22(
-              'License Blocked',
-            ),
+            Text22('License Blocked'),
           ]);
         } else if (model.isExpired) {
           children.addAll([
             const SizedBox(height: 20),
-            Text22(
-              'License Expired',
-            ),
+            Text22('License Expired'),
           ]);
         }
       }
@@ -228,10 +201,7 @@ class ActivateTabState extends State<ActivateTab> {
             model: model,
             machineId: Prefs.machineId,
             onDeactivate: (domain) async {
-              await _keyMgr.activate(
-                activate: false,
-                machineId: domain,
-              );
+              await _keyMgr.activate(activate: false, machineId: domain);
 
               if (mounted) {
                 setState(() {});
@@ -240,10 +210,7 @@ class ActivateTabState extends State<ActivateTab> {
           ),
         ),
         const SizedBox(height: 8),
-        Text16(
-          'Activations $activations',
-          bold: false,
-        ),
+        Text16('Activations $activations', bold: false),
         const SizedBox(height: 20),
         _checkButton(),
       ]);
@@ -275,9 +242,7 @@ class _ActivationTable extends StatelessWidget {
     Widget content;
 
     if (model == null || model!.registeredDomains.isEmpty) {
-      content = const NothingFound(
-        message: 'No Activations',
-      );
+      content = const NothingFound(message: 'No Activations');
     } else {
       content = ListView.builder(
         itemCount: model!.registeredDomains.length,
@@ -304,19 +269,14 @@ class _ActivationTable extends StatelessWidget {
 
 // ================================================
 class _LicenseKeyTextField extends StatelessWidget {
-  const _LicenseKeyTextField({
-    required this.textController,
-  });
+  const _LicenseKeyTextField({required this.textController});
 
   final TextEditingController textController;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      decoration: const InputDecoration(
-        isDense: true,
-        hintText: 'License Key',
-      ),
+      decoration: const InputDecoration(isDense: true, hintText: 'License Key'),
       keyboardType: TextInputType.text,
       autofocus: true,
       textInputAction: TextInputAction.done,
@@ -328,19 +288,14 @@ class _LicenseKeyTextField extends StatelessWidget {
 // ================================================
 
 class _EmailTextField extends StatelessWidget {
-  const _EmailTextField({
-    required this.textController,
-  });
+  const _EmailTextField({required this.textController});
 
   final TextEditingController textController;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      decoration: const InputDecoration(
-        isDense: true,
-        hintText: 'Email',
-      ),
+      decoration: const InputDecoration(isDense: true, hintText: 'Email'),
       keyboardType: TextInputType.text,
       autofocus: true,
       textInputAction: TextInputAction.done,
@@ -371,15 +326,12 @@ class _DomainListItem extends StatelessWidget {
     }
 
     return ListTile(
-      title: Text(
-        model.registeredDomain,
-        style: style,
-      ),
+      title: Text(model.registeredDomain, style: style),
       subtitle: Text(model.licKey),
       trailing: DFIconButton(
         tooltip: 'Deactivate',
         icon: const Icon(Icons.clear),
-        onPressed: () async {
+        onPressed: () {
           onDeactivate(model.registeredDomain);
         },
       ),

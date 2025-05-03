@@ -1,7 +1,6 @@
 import 'package:admin_app/dialogs/shared/widget_dialog.dart';
 import 'package:dfc_flutter/dfc_flutter_web.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 Future<void> showJsonDialog({
   required BuildContext context,
@@ -13,9 +12,8 @@ Future<void> showJsonDialog({
     tooltip: 'Copy JSON',
     onPressed: () {
       final String jsonStr = StrUtils.toPrettyString(data);
-      Clipboard.setData(ClipboardData(text: jsonStr));
 
-      Utils.showCopiedToast(context);
+      Utils.copyToClipboard(jsonStr);
     },
     icon: const Icon(Icons.content_copy),
   );
@@ -30,10 +28,7 @@ Future<void> showJsonDialog({
     titleButtons: titleButtons,
     builder: WidgetDialogContentBuilder(
       (keyboardNotifier, titleNotifier) => [
-        JsonViewerWidget(
-          data,
-          convertIntsToDates: false,
-        ),
+        JsonViewerWidget(data, convertIntsToDates: false),
       ],
     ),
     title: title,
