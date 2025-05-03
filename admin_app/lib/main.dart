@@ -98,7 +98,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               const SizedBox(height: 80),
               const Text('Lost License'),
-              const LostLicenseForm(
+              LostLicenseForm(
+                restUrl: Prefs.restUrl,
                 isMobile: false,
               ),
             ],

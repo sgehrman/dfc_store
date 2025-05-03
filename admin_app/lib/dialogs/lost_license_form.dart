@@ -1,4 +1,3 @@
-import 'package:admin_app/misc/prefs.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart' hide FormBuilder;
 import 'package:dfc_store/dfc_store.dart';
 import 'package:flutter/material.dart';
@@ -7,10 +6,11 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 
 class LostLicenseForm extends StatefulWidget {
   const LostLicenseForm({
+    required this.restUrl,
     required this.isMobile,
-    super.key,
   });
 
+  final String restUrl;
   final bool isMobile;
 
   @override
@@ -47,7 +47,7 @@ class _LostLicenseFormState extends State<LostLicenseForm> {
       setState(() {});
 
       final response = await ServerRestApi.requestLostLicense(
-        restUrl: Prefs.restUrl,
+        restUrl: widget.restUrl,
         email: email,
         sendEmail: !Utils.debugBuild,
       );
