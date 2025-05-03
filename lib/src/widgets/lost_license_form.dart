@@ -19,7 +19,7 @@ class _LostLicenseFormState extends State<LostLicenseForm> {
     debugLabel: '_formKey: LostLicenseForm',
   );
   late Map<String, dynamic> _initialValue;
-  AutovalidateMode _validateMode = AutovalidateMode.onUserInteraction;
+  AutovalidateMode _validateMode = AutovalidateMode.disabled;
 
   @override
   void initState() {
@@ -33,7 +33,6 @@ class _LostLicenseFormState extends State<LostLicenseForm> {
       _formKey.currentState!.save();
 
       final state = _formKey.currentState!;
-
       final email = state.value['email'] as String? ?? '';
 
       // clear out email and toast
@@ -54,6 +53,12 @@ class _LostLicenseFormState extends State<LostLicenseForm> {
         final error = response['message'] as String? ?? 'Something went wrong';
 
         Utils.successSnackbar(title: 'Error', message: error, error: true);
+      }
+    } else {
+      _validateMode = AutovalidateMode.onUserInteraction;
+
+      if (mounted) {
+        setState(() {});
       }
     }
   }
