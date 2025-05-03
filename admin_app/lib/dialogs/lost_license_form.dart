@@ -46,21 +46,23 @@ class _LostLicenseFormState extends State<LostLicenseForm> {
 
       setState(() {});
 
-      final responseModel = await ServerRestApi.requestLostLicense(
+      final response = await ServerRestApi.requestLostLicense(
         restUrl: Prefs.restUrl,
         email: email,
         sendEmail: !Utils.debugBuild,
       );
 
-      if (responseModel.isSuccess) {
+      if (response['result'] == 'ok') {
         Utils.successSnackbar(
           title: 'Success',
           message: 'License sent!',
         );
       } else {
+        final error = response['message'] as String? ?? 'Something went wrong';
+
         Utils.successSnackbar(
           title: 'Error',
-          message: 'Something went wrong',
+          message: error,
           error: true,
         );
       }

@@ -107,12 +107,7 @@ class ServerRestApi {
         },
       );
 
-      final result = json.decode(response.body) as Map<String, dynamic>? ?? {};
-
-      // TODO(SNG): need to display errors, this is bad
-      if (result['result'] == 'ok') {
-        return result;
-      }
+      return json.decode(response.body) as Map<String, dynamic>? ?? {};
     } catch (err) {
       print(err);
     }
@@ -128,10 +123,14 @@ class ServerRestApi {
       },
     );
 
-    final videoIdsString = response['videoIds'] as String? ?? '';
-    final videoIds = videoIdsString.split(',');
+    if (response['result'] == 'ok') {
+      final videoIdsString = response['videoIds'] as String? ?? '';
+      final videoIds = videoIdsString.split(',');
 
-    return videoIds.map((element) => element.trim()).toList();
+      return videoIds.map((element) => element.trim()).toList();
+    }
+
+    return [];
   }
 
   static Future<ServerOptions> handleGetOptions(String restUrl) async {
@@ -181,9 +180,11 @@ class ServerRestApi {
           },
         );
 
-        print('subscribeToNewsletter $response');
+        // print('subscribeToNewsletter $response');
 
-        return true;
+        if (response['result'] == 'ok') {
+          return true;
+        }
       } catch (err) {
         print('ERROR: subscribeToNewsletter $err');
       }
@@ -267,9 +268,8 @@ class ServerRestApi {
           },
         );
 
+        // print(response);
         // flutter: {result: ok, message: , error_code: 0, license_key: PFK_6750ed7832c76, email: milke@cocoatech.com}
-
-        print(response);
 
         if (response['result'] == 'ok') {
           return true;
@@ -284,7 +284,7 @@ class ServerRestApi {
     return false;
   }
 
-  static Future<LicenseResponseModel> requestLostLicense({
+  static Future<Map<String, dynamic>> requestLostLicense({
     required String restUrl,
     required String email,
     required bool sendEmail,
@@ -293,7 +293,7 @@ class ServerRestApi {
 
     if (trimmedEmail.isNotEmpty) {
       try {
-        final responseMap = await postToRestApi(
+        final response = await postToRestApi(
           restUrl,
           {
             'action': 'lost_license',
@@ -302,7 +302,7 @@ class ServerRestApi {
           },
         );
 
-        return LicenseResponseModel.fromJson(responseMap);
+        return response;
       } catch (err) {
         print('ERROR: requestLostLicense $err');
       }
@@ -310,7 +310,7 @@ class ServerRestApi {
       print('requestLostLicense email empty');
     }
 
-    return LicenseResponseModel.error();
+    return {};
   }
 }
 
