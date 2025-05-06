@@ -136,7 +136,7 @@ class ActivateTabState extends State<ActivateTab> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> children = [];
+    final children = <Widget>[];
     final model = _keyMgr.currentModel();
 
     final isActivated = _keyMgr.isActivated();
@@ -165,7 +165,7 @@ class ActivateTabState extends State<ActivateTab> {
 
       if (isActivated) {
         final expireDate = DateTime.tryParse(model.dateExpiry);
-        String expiresString = '';
+        var expiresString = '';
         if (expireDate != null) {
           final formatter = DateFormat('MM-dd-y');
           final dateString = formatter.format(expireDate);

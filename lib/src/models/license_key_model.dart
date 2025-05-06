@@ -64,7 +64,8 @@ class LicenseKeyModel extends LicenseResponseModel {
     required String machineId,
     String email = '', // pass in email to check that too
   }) {
-    bool result = isSuccess &&
+    var result =
+        isSuccess &&
         isActive &&
         this.licenseKey == licenseKey &&
         isRegistedOnDomain(machineId);
@@ -84,20 +85,20 @@ class LicenseKeyModel extends LicenseResponseModel {
     return this.licenseKey == licenseKey && this.email == email;
   }
 
-  bool verifyLicense({
-    required String licenseKey,
-  }) {
+  bool verifyLicense({required String licenseKey}) {
     return this.licenseKey == licenseKey;
   }
 
   bool isRegistedOnDomain(String domain) {
-    return registeredDomains
-        .any((element) => element.registeredDomain == domain);
+    return registeredDomains.any(
+      (element) => element.registeredDomain == domain,
+    );
   }
 
   RegisteredDomainModel? modelForDomain(String domain) {
-    return registeredDomains
-        .firstWhereOrNull((element) => element.registeredDomain == domain);
+    return registeredDomains.firstWhereOrNull(
+      (element) => element.registeredDomain == domain,
+    );
   }
 
   bool get isActive => status == 'active';

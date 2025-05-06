@@ -11,7 +11,7 @@ Future<void> showJsonDialog({
   final Widget copyButton = DFIconButton(
     tooltip: 'Copy JSON',
     onPressed: () {
-      final String jsonStr = StrUtils.toPrettyString(data);
+      final jsonStr = StrUtils.toPrettyString(data);
 
       Utils.copyToClipboard(jsonStr);
     },

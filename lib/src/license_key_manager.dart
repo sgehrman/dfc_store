@@ -115,7 +115,7 @@ class LicenseKeyManager {
     // and the button says activate, but this would deactiate them if they hit the button
     if (model != null) {
       if (activate != isActivated(machineId: machineId)) {
-        bool modelOK = false;
+        var modelOK = false;
 
         // check to see if emails match before trying (if we care about emails)
         if (_params.useEmail) {
@@ -170,15 +170,11 @@ class LicenseKeyManager {
 
   final Map<String, LicenseKeyModel> _cache = {};
 
-  LicenseKeyModel? _cacheGet({
-    required String licenseKey,
-  }) {
+  LicenseKeyModel? _cacheGet({required String licenseKey}) {
     return _cache[licenseKey];
   }
 
-  void _cacheSet({
-    required LicenseKeyModel model,
-  }) {
+  void _cacheSet({required LicenseKeyModel model}) {
     _cache[model.licenseKey] = model;
   }
 }

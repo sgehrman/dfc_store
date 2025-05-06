@@ -76,8 +76,8 @@ class Styles {
     required bool active,
   }) {
     final dark = Utils.isDarkMode(context);
-    Color activeColor = context.primary;
-    Color inactiveColor = Colors.black87;
+    var activeColor = context.primary;
+    var inactiveColor = Colors.black87;
 
     if (dark) {
       activeColor = context.primary;

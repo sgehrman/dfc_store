@@ -13,7 +13,7 @@ class ServerRestApi {
     required String webDomain,
     required String licenseKey,
   }) async {
-    final Uri uri = Uri.https(webDomain, '', {
+    final uri = Uri.https(webDomain, '', {
       'secret_key': licenseVerificationKey,
       'slm_action': 'slm_check',
       'license_key': licenseKey,
@@ -44,7 +44,7 @@ class ServerRestApi {
     required String licenseKey,
     required String domain,
   }) async {
-    final Uri uri = Uri.https(webDomain, '', {
+    final uri = Uri.https(webDomain, '', {
       'secret_key': licenseVerificationKey,
       'slm_action': 'slm_activate',
       'license_key': licenseKey,
@@ -74,7 +74,7 @@ class ServerRestApi {
     required String licenseKey,
     required String domain,
   }) async {
-    final Uri uri = Uri.https(webDomain, '', {
+    final uri = Uri.https(webDomain, '', {
       'secret_key': licenseVerificationKey,
       'slm_action': 'slm_deactivate',
       'license_key': licenseKey,
