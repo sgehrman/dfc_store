@@ -1,9 +1,9 @@
 import 'package:admin_app/dialogs/activate_dialog.dart';
 import 'package:admin_app/dialogs/admin_dialog.dart';
+import 'package:admin_app/dialogs/lost_license_dialog.dart';
 import 'package:admin_app/dialogs/settings.dart';
 import 'package:admin_app/misc/prefs.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart';
-import 'package:dfc_store/dfc_store.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -89,9 +89,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   showActivateDialog(context: context);
                 },
               ),
-              const SizedBox(height: 80),
-              const Text('Lost License'),
-              LostLicenseForm(restUrl: Prefs.restUrl, isMobile: false),
+              const SizedBox(height: 10),
+              DFButton(
+                label: 'Lost License',
+                onPressed: () {
+                  showLostLicenseDialog(context: context);
+                },
+              ),
             ],
           ),
         ),
