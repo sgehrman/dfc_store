@@ -348,7 +348,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "0f92f854a41d9593c39fcf12db54b09e3fdd2a0a"
+      resolved-ref: d17ca1b1cf946c6c9ca00b85d93d04aee6305c36
       url: "https://github.com/sgehrman/dfc_dart"
     source: git
     version: "1.0.1"
@@ -357,7 +357,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "04d5f583e9f9342a4f6362706f94856a083d87da"
+      resolved-ref: bfe143d1ec0948fdaaf45c1e1e356fff59ab69e4
       url: "https://github.com/sgehrman/dfc_flutter"
     source: git
     version: "1.0.1"
@@ -366,7 +366,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: f609d3bab963c3ce3195243205a1ed2930a60ec4
+      resolved-ref: a78577177197b4a56013031604009ead535fd5e8
       url: "https://github.com/sgehrman/dfc_lints"
     source: git
     version: "1.0.6"
@@ -463,10 +463,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_markdown
-      sha256: "634622a3a826d67cb05c0e3e576d1812c430fa98404e95b60b131775c73d76ec"
+      sha256: "08fb8315236099ff8e90cb87bb2b935e0a724a3af1623000a9cec930468e0f27"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.7"
+    version: "0.7.7+1"
   flutter_multi_formatter:
     dependency: transitive
     description:
@@ -1409,10 +1409,10 @@ packages:
     dependency: transitive
     description:
       name: video_player_android
-      sha256: ae7d4f1b41e3ac6d24dd9b9d5d6831b52d74a61bdd90a7a6262a33d8bb97c29a
+      sha256: "1f4e8e0e02403452d699ef7cf73fe9936fac8f6f0605303d111d71acb375d1bc"
       url: "https://pub.dev"
     source: hosted
-    version: "2.8.2"
+    version: "2.8.3"
   video_player_avfoundation:
     dependency: transitive
     description:
