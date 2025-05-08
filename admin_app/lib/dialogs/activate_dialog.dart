@@ -36,6 +36,7 @@ class ActivateTab extends StatefulWidget {
 class ActivateTabState extends State<ActivateTab> {
   final _licenseKeyController = TextEditingController();
   final _emailController = TextEditingController();
+  final _machineIdController = TextEditingController();
 
   late LicenseKeyManager _keyMgr;
 
@@ -45,12 +46,13 @@ class ActivateTabState extends State<ActivateTab> {
 
     _licenseKeyController.text = Prefs.licenseKey;
     _emailController.text = Prefs.email;
+    _machineIdController.text = Prefs.machineId;
 
     _keyMgr = LicenseKeyManager(() {
       final result = LicenseManagerParams(
         useEmail: true,
         verifySecret: Prefs.verifySecret,
-        machineId: Prefs.machineId,
+        machineId: _machineIdController.text,
         licenseKey: _licenseKeyController.text,
         webDomain: Prefs.webDomain,
         email: _emailController.text,
@@ -59,6 +61,7 @@ class ActivateTabState extends State<ActivateTab> {
       // save prefs here
       Prefs.licenseKey = result.licenseKey;
       Prefs.email = result.email;
+      Prefs.machineId = result.machineId;
 
       return result;
     });
@@ -146,6 +149,8 @@ class ActivateTabState extends State<ActivateTab> {
       _LicenseKeyTextField(textController: _licenseKeyController),
       const SizedBox(height: 10),
       _EmailTextField(textController: _emailController),
+      const SizedBox(height: 10),
+      _MachineIdTextField(textController: _machineIdController),
       const SizedBox(height: 20),
       DFButton(
         label: isActivated ? 'Deactivate' : 'Activate',
@@ -296,8 +301,25 @@ class _EmailTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       decoration: const InputDecoration(isDense: true, hintText: 'Email'),
+      keyboardType: TextInputType.emailAddress,
+      textInputAction: TextInputAction.done,
+      controller: textController,
+    );
+  }
+}
+
+// ================================================
+
+class _MachineIdTextField extends StatelessWidget {
+  const _MachineIdTextField({required this.textController});
+
+  final TextEditingController textController;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      decoration: const InputDecoration(isDense: true, hintText: 'Machine ID'),
       keyboardType: TextInputType.text,
-      autofocus: true,
       textInputAction: TextInputAction.done,
       controller: textController,
     );

@@ -4,20 +4,14 @@ import 'package:dfc_flutter/dfc_flutter_web_lite.dart' hide FormBuilder;
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
-Future<void> showSettingsDialog({
-  required BuildContext context,
-}) {
+Future<void> showSettingsDialog({required BuildContext context}) {
   return widgetDialog(
     context: context,
     scrollable: false,
     title: 'Settings',
     builder: WidgetDialogContentBuilder(
       (keyboardNotifier, titleNotifier) => [
-        const Flexible(
-          child: _AdminWidget(
-            isMobile: false,
-          ),
-        ),
+        const Flexible(child: _AdminWidget(isMobile: false)),
       ],
     ),
   );
@@ -39,10 +33,7 @@ class _AdminWidget extends StatelessWidget {
 // =================================================================
 
 class SettingsForm extends StatefulWidget {
-  const SettingsForm({
-    required this.restUrl,
-    super.key,
-  });
+  const SettingsForm({required this.restUrl, super.key});
 
   final String restUrl;
 
@@ -51,8 +42,9 @@ class SettingsForm extends StatefulWidget {
 }
 
 class _SettingsFormState extends State<SettingsForm> {
-  final _formKey =
-      GlobalKey<FormBuilderState>(debugLabel: '_formKey: SettingsForm');
+  final _formKey = GlobalKey<FormBuilderState>(
+    debugLabel: '_formKey: SettingsForm',
+  );
   late Map<String, dynamic> _initialValue;
   bool _obscureText = true;
 
@@ -63,9 +55,7 @@ class _SettingsFormState extends State<SettingsForm> {
     _initialValue = {
       'verifySecret': Prefs.verifySecret,
       'webDomain': Prefs.webDomain,
-      'email': Prefs.email,
       'restUrl': Prefs.restUrl,
-      'machineId': Prefs.machineId,
       'apiPassword': Prefs.apiPassword,
     };
   }
@@ -78,9 +68,7 @@ class _SettingsFormState extends State<SettingsForm> {
 
       Prefs.verifySecret = state.value['verifySecret'] as String? ?? '';
       Prefs.webDomain = state.value['webDomain'] as String? ?? '';
-      Prefs.email = state.value['email'] as String? ?? '';
       Prefs.restUrl = state.value['restUrl'] as String? ?? '';
-      Prefs.machineId = state.value['machineId'] as String? ?? '';
       Prefs.apiPassword = state.value['apiPassword'] as String? ?? '';
 
       Navigator.of(context).pop();
@@ -128,30 +116,9 @@ class _SettingsFormState extends State<SettingsForm> {
                   autocorrect: false,
                   keyboardType: TextInputType.name,
                   textInputAction: TextInputAction.next,
-                  decoration: const InputDecoration(
-                    labelText: 'Verify Secret',
-                  ),
+                  decoration: const InputDecoration(labelText: 'Verify Secret'),
                 ),
-                const SizedBox(height: 20),
-                FormBuilderTextField(
-                  name: 'machineId',
-                  autocorrect: false,
-                  keyboardType: TextInputType.name,
-                  textInputAction: TextInputAction.next,
-                  decoration: const InputDecoration(
-                    labelText: 'Machine ID',
-                  ),
-                ),
-                const SizedBox(height: 20),
-                FormBuilderTextField(
-                  name: 'email',
-                  autocorrect: false,
-                  keyboardType: TextInputType.name,
-                  textInputAction: TextInputAction.next,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                  ),
-                ),
+
                 const SizedBox(height: 20),
                 FormBuilderTextField(
                   name: 'apiPassword',
@@ -173,15 +140,10 @@ class _SettingsFormState extends State<SettingsForm> {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 40,
-                ),
+                const SizedBox(height: 40),
                 Align(
                   alignment: Alignment.centerRight,
-                  child: DFButton(
-                    label: 'Save',
-                    onPressed: _doSubmit,
-                  ),
+                  child: DFButton(label: 'Save', onPressed: _doSubmit),
                 ),
               ],
             ),
