@@ -6,20 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 
-Future<void> showAdminDialog({
-  required BuildContext context,
-}) {
+Future<void> showAdminDialog({required BuildContext context}) {
   return widgetDialog(
     context: context,
     scrollable: false,
     title: 'Admin',
     builder: WidgetDialogContentBuilder(
       (keyboardNotifier, titleNotifier) => [
-        const Flexible(
-          child: _AdminWidget(
-            isMobile: false,
-          ),
-        ),
+        const Flexible(child: _AdminWidget(isMobile: false)),
       ],
     ),
   );
@@ -41,17 +35,16 @@ class _AdminWidget extends StatelessWidget {
 // =================================================================
 
 class LicenseKeyForm extends StatefulWidget {
-  const LicenseKeyForm({
-    super.key,
-  });
+  const LicenseKeyForm({super.key});
 
   @override
   State<LicenseKeyForm> createState() => _LicenseKeyFormState();
 }
 
 class _LicenseKeyFormState extends State<LicenseKeyForm> {
-  final _formKey =
-      GlobalKey<FormBuilderState>(debugLabel: '_formKey: SignInForm');
+  final _formKey = GlobalKey<FormBuilderState>(
+    debugLabel: '_formKey: SignInForm',
+  );
   late Map<String, dynamic> _initialValue;
   AutovalidateMode _validateMode = AutovalidateMode.disabled;
 
@@ -59,12 +52,7 @@ class _LicenseKeyFormState extends State<LicenseKeyForm> {
   void initState() {
     super.initState();
 
-    _initialValue = {
-      'email': '',
-      'firstName': '',
-      'lastName': '',
-      'password': '',
-    };
+    _initialValue = {'email': '', 'firstName': '', 'lastName': ''};
   }
 
   Future<void> _doSubmit() async {
@@ -104,10 +92,7 @@ class _LicenseKeyFormState extends State<LicenseKeyForm> {
       );
 
       if (success) {
-        Utils.successSnackbar(
-          title: 'Success',
-          message: 'License Key sent',
-        );
+        Utils.successSnackbar(title: 'Success', message: 'License Key sent');
       } else {
         Utils.successSnackbar(
           title: 'Error',
@@ -129,9 +114,7 @@ class _LicenseKeyFormState extends State<LicenseKeyForm> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text(
-            'Create license key and send it to user',
-          ),
+          const Text('Create license key and send it to user'),
           const SizedBox(height: 20),
           FormBuilder(
             autovalidateMode: _validateMode,
@@ -195,13 +178,8 @@ class _LicenseKeyFormState extends State<LicenseKeyForm> {
                     ),
                   ]),
                 ),
-                const SizedBox(
-                  width: 20,
-                ),
-                DFButton(
-                  label: 'Send License',
-                  onPressed: _doSubmit,
-                ),
+                const SizedBox(width: 20),
+                DFButton(label: 'Send License', onPressed: _doSubmit),
               ],
             ),
           ),

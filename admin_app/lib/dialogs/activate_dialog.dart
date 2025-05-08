@@ -152,13 +152,12 @@ class ActivateTabState extends State<ActivateTab> {
       const SizedBox(height: 10),
       _MachineIdTextField(textController: _machineIdController),
       const SizedBox(height: 20),
-      DFButton(
-        label: isActivated ? 'Deactivate' : 'Activate',
-        onPressed: () => _activate(activate: !isActivated),
+      Center(
+        child: DFButton(
+          label: isActivated ? 'Deactivate' : 'Activate',
+          onPressed: () => _activate(activate: !isActivated),
+        ),
       ),
-      const SizedBox(height: 20),
-      Text16('Machine ID'),
-      Text(Prefs.machineId),
       const SizedBox(height: 20),
     ]);
 
