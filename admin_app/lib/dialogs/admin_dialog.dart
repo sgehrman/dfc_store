@@ -10,7 +10,7 @@ Future<void> showAdminDialog({required BuildContext context}) {
   return widgetDialog(
     context: context,
     scrollable: false,
-    title: 'Admin',
+    title: 'Create License Key',
     builder: WidgetDialogContentBuilder(
       (keyboardNotifier, titleNotifier) => [
         const Flexible(child: _AdminWidget(isMobile: false)),

@@ -14,6 +14,6 @@ Future<void> showLostLicenseDialog({required BuildContext context}) {
         LostLicenseForm(restUrl: Prefs.webStoreDomain.restUrl, isMobile: false),
       ],
     ),
-    title: 'Activate',
+    title: 'Lost License',
   );
 }
