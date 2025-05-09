@@ -70,7 +70,15 @@ class ActivateTabState extends State<ActivateTab> {
   }
 
   Future<void> _setup() async {
-    await _keyMgr.loadModel();
+    final model = await _keyMgr.loadModel();
+
+    if (model != null && model.isError) {
+      Utils.successSnackbar(
+        title: 'Error',
+        message: '${model.message} - ${model.result} ${model.errorCode}',
+        error: true,
+      );
+    }
 
     if (mounted) {
       setState(() {});

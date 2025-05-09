@@ -91,7 +91,7 @@ class LicenseKeyManager {
     return false;
   }
 
-  Future<void> loadModel() async {
+  Future<LicenseKeyModel?> loadModel() async {
     if (paramsOK) {
       final model = await ServerRestApi.loadModel(
         licenseKey: _params.licenseKey,
@@ -99,8 +99,16 @@ class LicenseKeyManager {
         webDomain: _params.webDomain,
       );
 
-      _cacheSet(model: model);
+      if (model.isError) {
+        print(model.message);
+      } else {
+        _cacheSet(model: model);
+      }
+
+      return model;
     }
+
+    return null;
   }
 
   Future<LicenseResponseModel> activate({
