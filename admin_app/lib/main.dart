@@ -1,6 +1,8 @@
 import 'package:admin_app/dialogs/activate_dialog.dart';
 import 'package:admin_app/dialogs/admin_dialog.dart';
 import 'package:admin_app/dialogs/lost_license_dialog.dart';
+import 'package:admin_app/dialogs/search_email_dialog.dart';
+import 'package:admin_app/dialogs/search_license_dialog.dart';
 import 'package:admin_app/dialogs/settings.dart';
 import 'package:admin_app/misc/enums.dart';
 import 'package:admin_app/misc/prefs.dart';
@@ -89,6 +91,20 @@ class _MyHomePageState extends State<MyHomePage> {
                     label: 'Lost License',
                     onPressed: () {
                       showLostLicenseDialog(context: context);
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  DFButton(
+                    label: 'Search Email',
+                    onPressed: () {
+                      showSearchEmailDialog(context: context);
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  DFButton(
+                    label: 'Search License',
+                    onPressed: () {
+                      showSearchLicenseDialog(context: context);
                     },
                   ),
                 ],

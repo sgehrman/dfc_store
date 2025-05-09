@@ -294,6 +294,79 @@ class ServerRestApi {
 
     return {};
   }
+
+  // exact match of email
+  static Future<Map<String, dynamic>> searchEmail({
+    required String restUrl,
+    required String email,
+    required String password,
+  }) async {
+    final trimmedEmail = email.trim();
+
+    if (trimmedEmail.isNotEmpty) {
+      try {
+        return postToRestApi(restUrl, {
+          'action': 'search_email',
+          'email': trimmedEmail,
+          'password': password.trim(),
+        });
+      } catch (err) {
+        print('ERROR: searchEmail $err');
+      }
+    } else {
+      print('searchEmail email empty');
+    }
+
+    return {};
+  }
+
+  static Future<Map<String, dynamic>> lookupEmail({
+    required String restUrl,
+    required String email,
+    required String password,
+  }) async {
+    final trimmedEmail = email.trim();
+
+    if (trimmedEmail.isNotEmpty) {
+      try {
+        return postToRestApi(restUrl, {
+          'action': 'lookup_email',
+          'email': trimmedEmail,
+          'password': password.trim(),
+        });
+      } catch (err) {
+        print('ERROR: lookupEmail $err');
+      }
+    } else {
+      print('lookupEmail email empty');
+    }
+
+    return {};
+  }
+
+  static Future<Map<String, dynamic>> searchLicense({
+    required String restUrl,
+    required String licenseKey,
+    required String password,
+  }) async {
+    final trimmed = licenseKey.trim();
+
+    if (trimmed.isNotEmpty) {
+      try {
+        return postToRestApi(restUrl, {
+          'action': 'search_license',
+          'license': trimmed,
+          'password': password.trim(),
+        });
+      } catch (err) {
+        print('ERROR: lookupEmail $err');
+      }
+    } else {
+      print('lookupEmail email empty');
+    }
+
+    return {};
+  }
 }
 
 // ================================================================
