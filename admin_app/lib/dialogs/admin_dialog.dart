@@ -56,7 +56,7 @@ class _LicenseKeyFormState extends State<LicenseKeyForm> {
   }
 
   Future<void> _doSubmit() async {
-    if (Prefs.apiPassword.isEmpty) {
+    if (Prefs.apiPassword(Prefs.webStoreDomain).isEmpty) {
       Utils.successSnackbar(
         title: 'Error',
         message: 'API password is blank',
@@ -84,11 +84,11 @@ class _LicenseKeyFormState extends State<LicenseKeyForm> {
       // setState(() {});
 
       final success = await ServerRestApi.sendLicenseKey(
-        restUrl: Prefs.restUrl,
+        restUrl: Prefs.webStoreDomain.restUrl,
         email: email,
         firstName: firstName,
         lastName: lastName,
-        password: Prefs.apiPassword,
+        password: Prefs.apiPassword(Prefs.webStoreDomain),
       );
 
       if (success) {

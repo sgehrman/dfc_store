@@ -11,7 +11,7 @@ Future<void> showLostLicenseDialog({required BuildContext context}) {
     builder: WidgetDialogContentBuilder(
       (keyboardNotifier, titleNotifier) => [
         const Text('Lost License'),
-        LostLicenseForm(restUrl: Prefs.restUrl, isMobile: false),
+        LostLicenseForm(restUrl: Prefs.webStoreDomain.restUrl, isMobile: false),
       ],
     ),
     title: 'Activate',

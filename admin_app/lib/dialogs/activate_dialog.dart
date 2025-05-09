@@ -51,10 +51,10 @@ class ActivateTabState extends State<ActivateTab> {
     _keyMgr = LicenseKeyManager(() {
       final result = LicenseManagerParams(
         useEmail: true,
-        verifySecret: Prefs.verifySecret,
+        verifySecret: Prefs.verifySecret(Prefs.webStoreDomain),
         machineId: _machineIdController.text,
         licenseKey: _licenseKeyController.text,
-        webDomain: Prefs.webDomain,
+        webDomain: Prefs.webStoreDomain.domain,
         email: _emailController.text,
       );
 

@@ -1,4 +1,5 @@
 import 'package:admin_app/dialogs/shared/widget_dialog.dart';
+import 'package:admin_app/misc/enums.dart';
 import 'package:admin_app/misc/prefs.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart' hide FormBuilder;
 import 'package:flutter/material.dart';
@@ -52,12 +53,14 @@ class _SettingsFormState extends State<SettingsForm> {
   void initState() {
     super.initState();
 
-    _initialValue = {
-      'verifySecret': Prefs.verifySecret,
-      'webDomain': Prefs.webDomain,
-      'restUrl': Prefs.restUrl,
-      'apiPassword': Prefs.apiPassword,
-    };
+    _initialValue = {};
+
+    for (final domain in WebStoreDomain.values) {
+      _initialValue[domain.formKey('verifySecret')] = Prefs.verifySecret(
+        domain,
+      );
+      _initialValue[domain.formKey('apiPassword')] = Prefs.apiPassword(domain);
+    }
   }
 
   Future<void> _doSubmit() async {
@@ -66,13 +69,60 @@ class _SettingsFormState extends State<SettingsForm> {
 
       final state = _formKey.currentState!;
 
-      Prefs.verifySecret = state.value['verifySecret'] as String? ?? '';
-      Prefs.webDomain = state.value['webDomain'] as String? ?? '';
-      Prefs.restUrl = state.value['restUrl'] as String? ?? '';
-      Prefs.apiPassword = state.value['apiPassword'] as String? ?? '';
+      for (final domain in WebStoreDomain.values) {
+        Prefs.setVerifySecret(
+          domain,
+          state.value[domain.formKey('verifySecret')] as String,
+        );
+
+        Prefs.setApiPassword(
+          domain,
+          state.value[domain.formKey('apiPassword')] as String,
+        );
+      }
 
       Navigator.of(context).pop();
     }
+  }
+
+  List<Widget> get _fields {
+    final result = <Widget>[];
+
+    for (final domain in WebStoreDomain.values) {
+      result.addAll([
+        FormBuilderTextField(
+          name: domain.formKey('verifySecret'),
+          autocorrect: false,
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.next,
+          decoration: InputDecoration(
+            labelText: 'Verify Secret ${domain.name}',
+          ),
+        ),
+        FormBuilderTextField(
+          name: domain.formKey('apiPassword'),
+          autocorrect: false,
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.next,
+          obscureText: _obscureText,
+          decoration: InputDecoration(
+            labelText: 'Password ${domain.name}',
+            suffixIcon: IconButton(
+              icon: Icon(
+                _obscureText ? Icons.visibility : Icons.visibility_off,
+              ),
+              onPressed: () {
+                setState(() {
+                  _obscureText = !_obscureText;
+                });
+              },
+            ),
+          ),
+        ),
+      ]);
+    }
+
+    return result;
   }
 
   @override
@@ -89,57 +139,7 @@ class _SettingsFormState extends State<SettingsForm> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                FormBuilderTextField(
-                  name: 'restUrl',
-                  autocorrect: false,
-                  keyboardType: TextInputType.name,
-                  textInputAction: TextInputAction.next,
-                  decoration: const InputDecoration(
-                    labelText: 'Rest Url',
-                    hintText: 'https://cocoatech.io/wp-json/api/rest',
-                  ),
-                ),
-                const SizedBox(height: 20),
-                FormBuilderTextField(
-                  name: 'webDomain',
-                  autocorrect: false,
-                  keyboardType: TextInputType.name,
-                  textInputAction: TextInputAction.next,
-                  decoration: const InputDecoration(
-                    labelText: 'Web Domain',
-                    hintText: 'cocoatech.io',
-                  ),
-                ),
-                const SizedBox(height: 20),
-                FormBuilderTextField(
-                  name: 'verifySecret',
-                  autocorrect: false,
-                  keyboardType: TextInputType.name,
-                  textInputAction: TextInputAction.next,
-                  decoration: const InputDecoration(labelText: 'Verify Secret'),
-                ),
-
-                const SizedBox(height: 20),
-                FormBuilderTextField(
-                  name: 'apiPassword',
-                  autocorrect: false,
-                  keyboardType: TextInputType.name,
-                  textInputAction: TextInputAction.next,
-                  obscureText: _obscureText,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscureText ? Icons.visibility : Icons.visibility_off,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _obscureText = !_obscureText;
-                        });
-                      },
-                    ),
-                  ),
-                ),
+                ..._fields,
                 const SizedBox(height: 40),
                 Align(
                   alignment: Alignment.centerRight,
