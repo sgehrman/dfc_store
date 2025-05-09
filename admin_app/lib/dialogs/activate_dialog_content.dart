@@ -1,34 +1,22 @@
 import 'package:admin_app/dialogs/json_dialog.dart';
-import 'package:admin_app/dialogs/shared/widget_dialog.dart';
 import 'package:admin_app/misc/prefs.dart';
 import 'package:dfc_flutter/dfc_flutter_web.dart';
 import 'package:dfc_store/dfc_store.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-Future<void> showActivateDialog({required BuildContext context}) {
-  return widgetDialog<List<String>>(
-    context: context,
-    dialogWidth: 700,
-    scrollable: false,
-    builder: WidgetDialogContentBuilder(
-      (keyboardNotifier, titleNotifier) => [
-        Flexible(
-          child: SizedBox(height: 1000, child: ActivateTab(keyboardNotifier)),
-        ),
-      ],
-    ),
-    title: 'Activate',
-  );
+class ActivateDialogContent extends StatelessWidget {
+  const ActivateDialogContent();
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(child: SizedBox(height: 1000, child: ActivateTab()));
+  }
 }
 
 // ===================================================================
 
 class ActivateTab extends StatefulWidget {
-  const ActivateTab(this.keyboardNotifier);
-
-  final ValueNotifier<bool> keyboardNotifier;
-
   @override
   State<ActivateTab> createState() => ActivateTabState();
 }

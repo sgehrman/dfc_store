@@ -1,4 +1,3 @@
-import 'package:admin_app/dialogs/shared/widget_dialog.dart';
 import 'package:admin_app/misc/prefs.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart' hide FormBuilder;
 import 'package:dfc_store/dfc_store.dart';
@@ -6,29 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 
-Future<void> showAdminDialog({required BuildContext context}) {
-  return widgetDialog(
-    context: context,
-    scrollable: false,
-    title: 'Create License Key',
-    builder: WidgetDialogContentBuilder(
-      (keyboardNotifier, titleNotifier) => [
-        const Flexible(child: _AdminWidget(isMobile: false)),
-      ],
-    ),
-  );
-}
-
-// =================================================================
-
-class _AdminWidget extends StatelessWidget {
-  const _AdminWidget({required this.isMobile});
-
-  final bool isMobile;
+class CreateDialogContent extends StatelessWidget {
+  const CreateDialogContent({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const LicenseKeyForm();
+    return const Flexible(child: LicenseKeyForm());
   }
 }
 

@@ -1,23 +1,18 @@
-import 'package:admin_app/dialogs/shared/widget_dialog.dart';
 import 'package:admin_app/misc/prefs.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart' hide FormBuilder;
 import 'package:dfc_store/dfc_store.dart';
 import 'package:flutter/material.dart';
 
-Future<void> showSearchEmailDialog({required BuildContext context}) {
-  return widgetDialog(
-    context: context,
-    title: 'Search Email',
-    builder: WidgetDialogContentBuilder(
-      (keyboardNotifier, titleNotifier) => [
-        const Flexible(
-          child: SizedBox(height: 700, child: _AdminWidget(isMobile: false)),
-        ),
-      ],
-    ),
-  );
-}
+class SearchEmailDialogContent extends StatelessWidget {
+  const SearchEmailDialogContent({super.key});
 
+  @override
+  Widget build(BuildContext context) {
+    return const Flexible(
+      child: SizedBox(height: 700, child: _AdminWidget(isMobile: false)),
+    );
+  }
+}
 // =================================================================
 
 class _AdminWidget extends StatefulWidget {

@@ -1,21 +1,16 @@
-import 'package:admin_app/dialogs/shared/widget_dialog.dart';
 import 'package:admin_app/misc/enums.dart';
 import 'package:admin_app/misc/prefs.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart' hide FormBuilder;
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
-Future<void> showSettingsDialog({required BuildContext context}) {
-  return widgetDialog(
-    context: context,
-    scrollable: false,
-    title: 'Settings',
-    builder: WidgetDialogContentBuilder(
-      (keyboardNotifier, titleNotifier) => [
-        const Flexible(child: _AdminWidget(isMobile: false)),
-      ],
-    ),
-  );
+class SettingsDialogContent extends StatelessWidget {
+  const SettingsDialogContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Flexible(child: _AdminWidget(isMobile: false));
+  }
 }
 
 // =================================================================

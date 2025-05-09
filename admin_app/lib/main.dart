@@ -1,9 +1,4 @@
-import 'package:admin_app/dialogs/activate_dialog.dart';
-import 'package:admin_app/dialogs/admin_dialog.dart';
-import 'package:admin_app/dialogs/lost_license_dialog.dart';
-import 'package:admin_app/dialogs/search_email_dialog.dart';
-import 'package:admin_app/dialogs/search_license_dialog.dart';
-import 'package:admin_app/dialogs/settings.dart';
+import 'package:admin_app/dialogs/dialogs.dart';
 import 'package:admin_app/misc/enums.dart';
 import 'package:admin_app/misc/prefs.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart';
@@ -76,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   DFButton(
                     label: 'Create License',
                     onPressed: () {
-                      showAdminDialog(context: context);
+                      showCreateDialog(context: context);
                     },
                   ),
                   const SizedBox(height: 10),
