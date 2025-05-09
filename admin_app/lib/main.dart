@@ -54,11 +54,8 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (context) {
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: context.primary,
-            title: Text(
-              Prefs.webStoreDomain.name.fromCamelCase(),
-              style: TextStyle(color: context.onPrimary),
-            ),
+            backgroundColor: Colors.white,
+            title: Text(Prefs.webStoreDomain.name.fromCamelCase()),
             actions: [
               const _DomainMenu(),
               IconButton(

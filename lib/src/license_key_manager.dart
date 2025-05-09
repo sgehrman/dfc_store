@@ -153,7 +153,7 @@ class LicenseKeyManager {
       }
     }
 
-    return LicenseResponseModel.success();
+    return LicenseResponseModel.error();
   }
 
   // --------------------------------------
