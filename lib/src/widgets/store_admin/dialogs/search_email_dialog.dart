@@ -48,44 +48,58 @@ class _AdminWidgetState extends State<_AdminWidget> {
     _emailController.text = StorePrefs.email;
   }
 
+  Future<void> _onSubmit(String email) async {
+    StorePrefs.email = email;
+
+    // final result = await ServerRestApi.searchEmail(
+    final result = await ServerRestApi.lookupEmail(
+      restUrl: StorePrefs.webStoreDomain.restUrl,
+      email: email,
+      password: StorePrefs.apiPassword(StorePrefs.webStoreDomain),
+    );
+
+    if (result.isNotEmpty) {
+      _output = StrUtils.toPrettyString(result);
+
+      if (mounted) {
+        setState(() {});
+      }
+
+      Utils.successSnackbar(title: 'Success', message: 'Search complete');
+    } else {
+      Utils.successSnackbar(
+        title: 'Error',
+        message: 'Something went wrong',
+        error: true,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        TextField(
-          controller: _emailController,
-          decoration: const InputDecoration(isDense: true, hintText: 'Email'),
-          keyboardType: TextInputType.text,
-          autofocus: true,
-          textInputAction: TextInputAction.done,
-          onSubmitted: (email) async {
-            // final result = await ServerRestApi.searchEmail(
-            final result = await ServerRestApi.lookupEmail(
-              restUrl: StorePrefs.webStoreDomain.restUrl,
-              email: email,
-              password: StorePrefs.apiPassword(StorePrefs.webStoreDomain),
-            );
-
-            if (result.isNotEmpty) {
-              _output = StrUtils.toPrettyString(result);
-
-              if (mounted) {
-                setState(() {});
-              }
-
-              Utils.successSnackbar(
-                title: 'Success',
-                message: 'Search complete',
-              );
-            } else {
-              Utils.successSnackbar(
-                title: 'Error',
-                message: 'Something went wrong',
-                error: true,
-              );
-            }
-          },
+        Row(
+          children: [
+            TextField(
+              controller: _emailController,
+              decoration: const InputDecoration(
+                isDense: true,
+                hintText: 'Email',
+              ),
+              keyboardType: TextInputType.text,
+              autofocus: true,
+              textInputAction: TextInputAction.done,
+              onSubmitted: _onSubmit,
+            ),
+            const SizedBox(width: 10),
+            FloatingActionButton(
+              onPressed: () => _onSubmit(_emailController.text),
+              mini: true,
+              child: const Icon(Icons.search),
+            ),
+          ],
         ),
         const SizedBox(height: 20),
         Expanded(

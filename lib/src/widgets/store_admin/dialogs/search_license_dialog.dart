@@ -48,47 +48,59 @@ class _AdminWidgetState extends State<_AdminWidget> {
     _licenseKeyController.text = StorePrefs.licenseKey;
   }
 
+  Future<void> _onSubmit(String license) async {
+    StorePrefs.licenseKey = license;
+
+    // final result = await ServerRestApi.searchEmail(
+    final result = await ServerRestApi.searchLicense(
+      restUrl: StorePrefs.webStoreDomain.restUrl,
+      licenseKey: license,
+      password: StorePrefs.apiPassword(StorePrefs.webStoreDomain),
+    );
+
+    if (result.isNotEmpty) {
+      _output = StrUtils.toPrettyString(result);
+
+      if (mounted) {
+        setState(() {});
+      }
+
+      Utils.successSnackbar(title: 'Success', message: 'Search complete');
+    } else {
+      Utils.successSnackbar(
+        title: 'Error',
+        message: 'Something went wrong',
+        error: true,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        TextField(
-          controller: _licenseKeyController,
-          decoration: const InputDecoration(
-            isDense: true,
-            hintText: 'License Key',
-          ),
-          keyboardType: TextInputType.text,
-          autofocus: true,
-          textInputAction: TextInputAction.done,
-          onSubmitted: (license) async {
-            // final result = await ServerRestApi.searchEmail(
-            final result = await ServerRestApi.searchLicense(
-              restUrl: StorePrefs.webStoreDomain.restUrl,
-              licenseKey: license,
-              password: StorePrefs.apiPassword(StorePrefs.webStoreDomain),
-            );
+        Row(
+          children: [
+            TextField(
+              controller: _licenseKeyController,
+              decoration: const InputDecoration(
+                isDense: true,
+                hintText: 'License Key',
+              ),
+              keyboardType: TextInputType.text,
+              autofocus: true,
+              textInputAction: TextInputAction.done,
+              onSubmitted: _onSubmit,
+            ),
 
-            if (result.isNotEmpty) {
-              _output = StrUtils.toPrettyString(result);
-
-              if (mounted) {
-                setState(() {});
-              }
-
-              Utils.successSnackbar(
-                title: 'Success',
-                message: 'Search complete',
-              );
-            } else {
-              Utils.successSnackbar(
-                title: 'Error',
-                message: 'Something went wrong',
-                error: true,
-              );
-            }
-          },
+            const SizedBox(width: 10),
+            FloatingActionButton(
+              onPressed: () => _onSubmit(_licenseKeyController.text),
+              mini: true,
+              child: const Icon(Icons.search),
+            ),
+          ],
         ),
         const SizedBox(height: 20),
         Expanded(
