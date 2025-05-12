@@ -140,6 +140,7 @@ class _SettingsFormState extends State<SettingsForm> {
       constraints: const BoxConstraints(maxWidth: 600),
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        spacing: 20,
         children: [
           FormBuilder(
             autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -149,7 +150,7 @@ class _SettingsFormState extends State<SettingsForm> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ..._fields,
-                const SizedBox(height: 40),
+                const SizedBox(height: 10),
                 Align(
                   alignment: Alignment.centerRight,
                   child: DFButton(label: 'Save', onPressed: _doSubmit),

@@ -39,12 +39,21 @@ class _AdminWidget extends StatefulWidget {
 
 class _AdminWidgetState extends State<_AdminWidget> {
   String _output = '';
+  final _emailController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _emailController.text = StorePrefs.email;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         TextField(
+          controller: _emailController,
           decoration: const InputDecoration(isDense: true, hintText: 'Email'),
           keyboardType: TextInputType.text,
           autofocus: true,

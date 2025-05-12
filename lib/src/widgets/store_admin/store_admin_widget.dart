@@ -18,51 +18,51 @@ class StoreAdminWidget extends StatelessWidget {
       keys: const [StorePrefs.kWebStoreDomainPrefKey],
       builder: (context) {
         return Column(
+          spacing: 30,
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const WebStoreDomainMenu(),
-                IconButton(
-                  onPressed: () {
-                    showStoreSettingsDialog(context: context);
-                  },
-                  icon: const Icon(Icons.settings),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.only(bottom: 40),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const WebStoreDomainMenu(),
+                  IconButton(
+                    onPressed: () {
+                      showStoreSettingsDialog(context: context);
+                    },
+                    icon: const Icon(Icons.settings),
+                  ),
+                ],
+              ),
             ),
-            DFButton(
-              label: 'Create License',
-              onPressed: () {
-                showCreateDialog(context: context);
-              },
-            ),
-            const SizedBox(height: 10),
-            DFButton(
-              label: 'Activate License',
-              onPressed: () {
-                showActivateDialog(context: context);
-              },
-            ),
-            const SizedBox(height: 10),
-            DFButton(
-              label: 'Lost License',
-              onPressed: () {
-                showLostLicenseDialog(context: context);
-              },
-            ),
-            const SizedBox(height: 10),
             DFButton(
               label: 'Search Email',
               onPressed: () {
                 showSearchEmailDialog(context: context);
               },
             ),
-            const SizedBox(height: 10),
             DFButton(
               label: 'Search License',
               onPressed: () {
                 showSearchLicenseDialog(context: context);
+              },
+            ),
+            DFButton(
+              label: 'Activate License',
+              onPressed: () {
+                showActivateDialog(context: context);
+              },
+            ),
+            DFButton(
+              label: 'Lost License',
+              onPressed: () {
+                showLostLicenseDialog(context: context);
+              },
+            ),
+            DFButton(
+              label: 'Create License',
+              onPressed: () {
+                showCreateDialog(context: context);
               },
             ),
           ],

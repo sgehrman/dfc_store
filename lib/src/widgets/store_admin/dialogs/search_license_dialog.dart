@@ -39,12 +39,21 @@ class _AdminWidget extends StatefulWidget {
 
 class _AdminWidgetState extends State<_AdminWidget> {
   String _output = '';
+  final _licenseKeyController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _licenseKeyController.text = StorePrefs.licenseKey;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         TextField(
+          controller: _licenseKeyController,
           decoration: const InputDecoration(
             isDense: true,
             hintText: 'License Key',
