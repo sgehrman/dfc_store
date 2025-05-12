@@ -87,6 +87,7 @@ class _AdminWidgetState extends State<_AdminWidget> {
             }
           },
         ),
+        const SizedBox(height: 20),
         Expanded(
           child: Container(
             color: context.surfaceContainerHigh,

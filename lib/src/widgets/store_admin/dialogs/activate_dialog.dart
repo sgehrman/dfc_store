@@ -67,10 +67,10 @@ class ActivateTabState extends State<ActivateTab> {
       return result;
     });
 
-    _setup();
+    _refresh();
   }
 
-  Future<void> _setup() async {
+  Future<void> _refresh() async {
     final model = await _keyMgr.loadModel();
 
     if (model != null && model.isError) {
@@ -160,11 +160,16 @@ class ActivateTabState extends State<ActivateTab> {
       const SizedBox(height: 10),
       _MachineIdTextField(textController: _machineIdController),
       const SizedBox(height: 20),
-      Center(
-        child: DFButton(
-          label: isActivated ? 'Deactivate' : 'Activate',
-          onPressed: () => _activate(activate: !isActivated),
-        ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          DFButton(label: 'Refresh', onPressed: _refresh),
+          const SizedBox(width: 20),
+          DFButton(
+            label: isActivated ? 'Deactivate' : 'Activate',
+            onPressed: () => _activate(activate: !isActivated),
+          ),
+        ],
       ),
       const SizedBox(height: 20),
     ]);
