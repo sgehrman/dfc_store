@@ -2,7 +2,7 @@ import 'package:admin_app/dialogs/shared/store_dialog.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart';
 import 'package:flutter/material.dart';
 
-Future<void> showJsonDialog({
+Future<void> showStoreJsonDialog({
   required BuildContext context,
   required String title,
   required Map<String, dynamic> data,

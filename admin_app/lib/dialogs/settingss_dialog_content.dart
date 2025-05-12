@@ -1,5 +1,5 @@
-import 'package:admin_app/misc/enums.dart';
 import 'package:admin_app/misc/store_prefs.dart';
+import 'package:admin_app/misc/web_store_domain.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart' hide FormBuilder;
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';

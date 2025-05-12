@@ -1,4 +1,4 @@
-import 'package:admin_app/dialogs/json_dialog.dart';
+import 'package:admin_app/dialogs/store_json_dialog.dart';
 import 'package:admin_app/misc/store_prefs.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart';
 import 'package:dfc_store/dfc_store.dart';
@@ -120,7 +120,7 @@ class ActivateTabState extends State<ActivateTab> {
           onPressed: () {
             final model = _keyMgr.currentModel();
 
-            showJsonDialog(
+            showStoreJsonDialog(
               context: context,
               data: model?.toJson() ?? {},
               title: 'License Info',

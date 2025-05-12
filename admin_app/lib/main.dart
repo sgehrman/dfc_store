@@ -1,6 +1,4 @@
-import 'package:admin_app/dialogs/dialogs.dart';
-import 'package:admin_app/misc/enums.dart';
-import 'package:admin_app/misc/store_prefs.dart';
+import 'package:admin_app/store_admin_widget.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart';
 import 'package:flutter/material.dart';
 
@@ -46,68 +44,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return PreferencesListener(
-      keys: const [StorePrefs.kWebStoreDomainPrefKey],
-      builder: (context) {
-        return Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.white,
-            title: Text(StorePrefs.webStoreDomain.name.fromCamelCase()),
-            actions: [
-              const WebStoreDomainMenu(),
-              IconButton(
-                onPressed: () {
-                  showSettingsDialog(context: context);
-                },
-                icon: const Icon(Icons.settings),
-              ),
-            ],
-          ),
-          body: SharedScaffoldContext(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  DFButton(
-                    label: 'Create License',
-                    onPressed: () {
-                      showCreateDialog(context: context);
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  DFButton(
-                    label: 'Activate License',
-                    onPressed: () {
-                      showActivateDialog(context: context);
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  DFButton(
-                    label: 'Lost License',
-                    onPressed: () {
-                      showLostLicenseDialog(context: context);
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  DFButton(
-                    label: 'Search Email',
-                    onPressed: () {
-                      showSearchEmailDialog(context: context);
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  DFButton(
-                    label: 'Search License',
-                    onPressed: () {
-                      showSearchLicenseDialog(context: context);
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
+    return const Scaffold(
+      body: SharedScaffoldContext(child: StoreAdminWidget()),
     );
   }
 }

@@ -1,4 +1,4 @@
-import 'package:admin_app/misc/enums.dart';
+import 'package:admin_app/misc/web_store_domain.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart';
 
 class StorePrefs {
