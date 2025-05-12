@@ -18,53 +18,55 @@ class StoreAdminWidget extends StatelessWidget {
       keys: const [StorePrefs.kWebStoreDomainPrefKey],
       builder: (context) {
         return Column(
-          spacing: 30,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(bottom: 40),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const WebStoreDomainMenu(),
-                  IconButton(
-                    onPressed: () {
-                      showStoreSettingsDialog(context: context);
-                    },
-                    icon: const Icon(Icons.settings),
-                  ),
-                ],
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const WebStoreDomainMenu(),
+                IconButton(
+                  onPressed: () {
+                    showStoreSettingsDialog(context: context);
+                  },
+                  icon: const Icon(Icons.settings),
+                ),
+              ],
             ),
+            const SizedBox(height: 40),
             DFButton(
               label: 'Search Email',
               onPressed: () {
                 showSearchEmailDialog(context: context);
               },
             ),
+            const SizedBox(height: 20),
             DFButton(
               label: 'Search License',
               onPressed: () {
                 showSearchLicenseDialog(context: context);
               },
             ),
+            const SizedBox(height: 20),
             DFButton(
               label: 'Activate License',
               onPressed: () {
                 showActivateDialog(context: context);
               },
             ),
+            const SizedBox(height: 20),
             DFButton(
               label: 'Lost License',
               onPressed: () {
                 showLostLicenseDialog(context: context);
               },
             ),
+            const SizedBox(height: 20),
             DFButton(
               label: 'Create License',
               onPressed: () {
                 showCreateDialog(context: context);
               },
             ),
+            const SizedBox(height: 20),
           ],
         );
       },
