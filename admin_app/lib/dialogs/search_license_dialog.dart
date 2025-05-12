@@ -1,10 +1,23 @@
+import 'package:admin_app/dialogs/shared/store_dialog.dart';
 import 'package:admin_app/misc/store_prefs.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart' hide FormBuilder;
 import 'package:dfc_store/dfc_store.dart';
 import 'package:flutter/material.dart';
 
-class SearchLicenseDialogContent extends StatelessWidget {
-  const SearchLicenseDialogContent({super.key});
+Future<void> showSearchLicenseDialog({required BuildContext context}) {
+  return storeDialog(
+    context: context,
+    title: 'Search License',
+    builder: AdminDialogContentBuilder(
+      (keyboardNotifier) => [const _SearchLicenseDialogContent()],
+    ),
+  );
+}
+
+// =================================================================
+
+class _SearchLicenseDialogContent extends StatelessWidget {
+  const _SearchLicenseDialogContent();
 
   @override
   Widget build(BuildContext context) {

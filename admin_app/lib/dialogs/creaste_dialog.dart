@@ -1,3 +1,4 @@
+import 'package:admin_app/dialogs/shared/store_dialog.dart';
 import 'package:admin_app/misc/store_prefs.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart' hide FormBuilder;
 import 'package:dfc_store/dfc_store.dart';
@@ -5,25 +6,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 
-class CreateDialogContent extends StatelessWidget {
-  const CreateDialogContent({super.key});
+Future<void> showCreateDialog({required BuildContext context}) {
+  return storeDialog(
+    context: context,
+    scrollable: false,
+    title: 'Create License Key',
+    builder: AdminDialogContentBuilder(
+      (keyboardNotifier) => [const _CreateDialogContent()],
+    ),
+  );
+}
+
+class _CreateDialogContent extends StatelessWidget {
+  const _CreateDialogContent();
 
   @override
   Widget build(BuildContext context) {
-    return const Flexible(child: LicenseKeyForm());
+    return const Flexible(child: _CreateForm());
   }
 }
 
 // =================================================================
 
-class LicenseKeyForm extends StatefulWidget {
-  const LicenseKeyForm({super.key});
+class _CreateForm extends StatefulWidget {
+  const _CreateForm();
 
   @override
-  State<LicenseKeyForm> createState() => _LicenseKeyFormState();
+  State<_CreateForm> createState() => _CreateFormState();
 }
 
-class _LicenseKeyFormState extends State<LicenseKeyForm> {
+class _CreateFormState extends State<_CreateForm> {
   final _formKey = GlobalKey<FormBuilderState>(
     debugLabel: '_formKey: SignInForm',
   );

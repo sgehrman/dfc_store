@@ -1,11 +1,23 @@
+import 'package:admin_app/dialogs/shared/store_dialog.dart';
 import 'package:admin_app/misc/store_prefs.dart';
 import 'package:admin_app/misc/web_store_domain.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart' hide FormBuilder;
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
-class SettingsDialogContent extends StatelessWidget {
-  const SettingsDialogContent({super.key});
+Future<void> showStoreSettingsDialog({required BuildContext context}) {
+  return storeDialog(
+    context: context,
+    scrollable: false,
+    title: 'Settings',
+    builder: AdminDialogContentBuilder(
+      (keyboardNotifier) => [const _SettingsDialogContent()],
+    ),
+  );
+}
+
+class _SettingsDialogContent extends StatelessWidget {
+  const _SettingsDialogContent();
 
   @override
   Widget build(BuildContext context) {

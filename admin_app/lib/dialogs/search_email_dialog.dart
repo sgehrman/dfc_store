@@ -1,10 +1,23 @@
+import 'package:admin_app/dialogs/shared/store_dialog.dart';
 import 'package:admin_app/misc/store_prefs.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart' hide FormBuilder;
 import 'package:dfc_store/dfc_store.dart';
 import 'package:flutter/material.dart';
 
-class SearchEmailDialogContent extends StatelessWidget {
-  const SearchEmailDialogContent({super.key});
+Future<void> showSearchEmailDialog({required BuildContext context}) {
+  return storeDialog(
+    context: context,
+    title: 'Search Email',
+    builder: AdminDialogContentBuilder(
+      (keyboardNotifier) => [const _SearchEmailDialogContent()],
+    ),
+  );
+}
+
+// =================================================================
+
+class _SearchEmailDialogContent extends StatelessWidget {
+  const _SearchEmailDialogContent();
 
   @override
   Widget build(BuildContext context) {
