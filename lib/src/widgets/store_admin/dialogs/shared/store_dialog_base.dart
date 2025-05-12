@@ -66,7 +66,7 @@ class StoreDialogRoute<T> extends ModalRoute<T> {
       ),
       width: math.min(screenSize.width * 0.9, width()),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.dialogBackgroundColor,
         borderRadius: const BorderRadius.all(Radius.circular(20)),
         boxShadow: dialogShadows,
       ),
@@ -142,33 +142,26 @@ class _DialogHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Theme(
-      data: theme.copyWith(
-        iconTheme: theme.iconTheme.copyWith(color: Colors.white),
+    return Container(
+      decoration: BoxDecoration(
+        color: context.primary,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
       ),
-      child: Container(
-        decoration: BoxDecoration(
-          color: context.primary,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
+      padding: const EdgeInsets.only(left: 20, right: 14),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+            child:
+                isMobile
+                    ? Text16(title, color: context.onPrimary)
+                    : Text20(title, color: context.onPrimary, bold: false),
           ),
-        ),
-        padding: const EdgeInsets.only(left: 20, right: 14),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child:
-                  isMobile
-                      ? Text16(title, color: Colors.white)
-                      : Text20(title, color: Colors.white, bold: false),
-            ),
-            titleButton,
-          ],
-        ),
+          titleButton,
+        ],
       ),
     );
   }
