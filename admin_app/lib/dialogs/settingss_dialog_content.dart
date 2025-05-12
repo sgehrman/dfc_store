@@ -1,5 +1,5 @@
 import 'package:admin_app/misc/enums.dart';
-import 'package:admin_app/misc/prefs.dart';
+import 'package:admin_app/misc/store_prefs.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart' hide FormBuilder;
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -51,10 +51,12 @@ class _SettingsFormState extends State<SettingsForm> {
     _initialValue = {};
 
     for (final domain in WebStoreDomain.values) {
-      _initialValue[domain.formKey('verifySecret')] = Prefs.verifySecret(
+      _initialValue[domain.formKey('verifySecret')] = StorePrefs.verifySecret(
         domain,
       );
-      _initialValue[domain.formKey('apiPassword')] = Prefs.apiPassword(domain);
+      _initialValue[domain.formKey('apiPassword')] = StorePrefs.apiPassword(
+        domain,
+      );
     }
   }
 
@@ -65,12 +67,12 @@ class _SettingsFormState extends State<SettingsForm> {
       final state = _formKey.currentState!;
 
       for (final domain in WebStoreDomain.values) {
-        Prefs.setVerifySecret(
+        StorePrefs.setVerifySecret(
           domain,
           state.value[domain.formKey('verifySecret')] as String,
         );
 
-        Prefs.setApiPassword(
+        StorePrefs.setApiPassword(
           domain,
           state.value[domain.formKey('apiPassword')] as String,
         );

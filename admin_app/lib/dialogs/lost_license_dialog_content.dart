@@ -1,4 +1,4 @@
-import 'package:admin_app/misc/prefs.dart';
+import 'package:admin_app/misc/store_prefs.dart';
 import 'package:dfc_store/dfc_store.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +10,10 @@ class LostLicenseDialogContent extends StatelessWidget {
     return Column(
       children: [
         const Text('Lost License'),
-        LostLicenseForm(restUrl: Prefs.webStoreDomain.restUrl, isMobile: false),
+        LostLicenseForm(
+          restUrl: StorePrefs.webStoreDomain.restUrl,
+          isMobile: false,
+        ),
       ],
     );
   }

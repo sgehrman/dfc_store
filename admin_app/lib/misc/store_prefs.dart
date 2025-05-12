@@ -1,7 +1,7 @@
 import 'package:admin_app/misc/enums.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart';
 
-class Prefs {
+class StorePrefs {
   // ----------------------------------------------------
   // apiPassword
 

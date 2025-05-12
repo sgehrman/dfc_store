@@ -1,4 +1,4 @@
-import 'package:admin_app/misc/prefs.dart';
+import 'package:admin_app/misc/store_prefs.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart' hide FormBuilder;
 import 'package:dfc_store/dfc_store.dart';
 import 'package:flutter/material.dart';
@@ -42,9 +42,9 @@ class _AdminWidgetState extends State<_AdminWidget> {
           onSubmitted: (license) async {
             // final result = await ServerRestApi.searchEmail(
             final result = await ServerRestApi.searchLicense(
-              restUrl: Prefs.webStoreDomain.restUrl,
+              restUrl: StorePrefs.webStoreDomain.restUrl,
               licenseKey: license,
-              password: Prefs.apiPassword(Prefs.webStoreDomain),
+              password: StorePrefs.apiPassword(StorePrefs.webStoreDomain),
             );
 
             if (result.isNotEmpty) {

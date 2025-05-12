@@ -1,5 +1,5 @@
-import 'package:admin_app/dialogs/shared/widget_dialog.dart';
-import 'package:dfc_flutter/dfc_flutter_web.dart';
+import 'package:admin_app/dialogs/shared/store_dialog.dart';
+import 'package:dfc_flutter/dfc_flutter_web_lite.dart';
 import 'package:flutter/material.dart';
 
 Future<void> showJsonDialog({
@@ -23,13 +23,11 @@ Future<void> showJsonDialog({
     titleButtons.add(additionalButton);
   }
 
-  return widgetDialog<List<String>>(
+  return storeDialog<List<String>>(
     context: context,
     titleButtons: titleButtons,
-    builder: WidgetDialogContentBuilder(
-      (keyboardNotifier, titleNotifier) => [
-        JsonViewerWidget(data, convertIntsToDates: false),
-      ],
+    builder: AdminDialogContentBuilder(
+      (keyboardNotifier) => [JsonViewerWidget(data, convertIntsToDates: false)],
     ),
     title: title,
   );

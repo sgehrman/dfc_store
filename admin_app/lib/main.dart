@@ -1,6 +1,6 @@
 import 'package:admin_app/dialogs/dialogs.dart';
 import 'package:admin_app/misc/enums.dart';
-import 'package:admin_app/misc/prefs.dart';
+import 'package:admin_app/misc/store_prefs.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart';
 import 'package:flutter/material.dart';
 
@@ -47,14 +47,14 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return PreferencesListener(
-      keys: const [Prefs.kWebStoreDomainPrefKey],
+      keys: const [StorePrefs.kWebStoreDomainPrefKey],
       builder: (context) {
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.white,
-            title: Text(Prefs.webStoreDomain.name.fromCamelCase()),
+            title: Text(StorePrefs.webStoreDomain.name.fromCamelCase()),
             actions: [
-              const _DomainMenu(),
+              const WebStoreDomainMenu(),
               IconButton(
                 onPressed: () {
                   showSettingsDialog(context: context);
@@ -108,49 +108,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         );
       },
-    );
-  }
-}
-
-// =============================================================
-
-class _DomainMenu extends StatefulWidget {
-  const _DomainMenu();
-
-  @override
-  State<_DomainMenu> createState() => _DomainMenuState();
-}
-
-class _DomainMenuState extends State<_DomainMenu> {
-  List<MenuButtonBarItemData> menuItems() {
-    final result = <MenuButtonBarItemData>[];
-
-    for (final domain in WebStoreDomain.values) {
-      result.add(
-        MenuButtonBarItemData(
-          title: domain.name,
-          leading: Icon(
-            Icons.check,
-            color: Prefs.webStoreDomain == domain ? null : Colors.transparent,
-          ),
-          action: () {
-            Prefs.webStoreDomain = domain;
-
-            // refresh menu, could also just do a prefs watch on this
-            setState(() {});
-          },
-        ),
-      );
-    }
-
-    return result;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MenuAnchorButton(
-      title: Prefs.webStoreDomain.name.fromCamelCase(),
-      menuData: menuItems(),
     );
   }
 }

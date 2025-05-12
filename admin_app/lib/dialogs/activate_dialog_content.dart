@@ -1,6 +1,6 @@
 import 'package:admin_app/dialogs/json_dialog.dart';
-import 'package:admin_app/misc/prefs.dart';
-import 'package:dfc_flutter/dfc_flutter_web.dart';
+import 'package:admin_app/misc/store_prefs.dart';
+import 'package:dfc_flutter/dfc_flutter_web_lite.dart';
 import 'package:dfc_store/dfc_store.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -32,24 +32,24 @@ class ActivateTabState extends State<ActivateTab> {
   void initState() {
     super.initState();
 
-    _licenseKeyController.text = Prefs.licenseKey;
-    _emailController.text = Prefs.email;
-    _machineIdController.text = Prefs.machineId;
+    _licenseKeyController.text = StorePrefs.licenseKey;
+    _emailController.text = StorePrefs.email;
+    _machineIdController.text = StorePrefs.machineId;
 
     _keyMgr = LicenseKeyManager(() {
       final result = LicenseManagerParams(
         useEmail: true,
-        verifySecret: Prefs.verifySecret(Prefs.webStoreDomain),
+        verifySecret: StorePrefs.verifySecret(StorePrefs.webStoreDomain),
         machineId: _machineIdController.text,
         licenseKey: _licenseKeyController.text,
-        webDomain: Prefs.webStoreDomain.domain,
+        webDomain: StorePrefs.webStoreDomain.domain,
         email: _emailController.text,
       );
 
       // save prefs here
-      Prefs.licenseKey = result.licenseKey;
-      Prefs.email = result.email;
-      Prefs.machineId = result.machineId;
+      StorePrefs.licenseKey = result.licenseKey;
+      StorePrefs.email = result.email;
+      StorePrefs.machineId = result.machineId;
 
       return result;
     });
@@ -76,7 +76,7 @@ class ActivateTabState extends State<ActivateTab> {
   Future<void> _activate({required bool activate}) async {
     final result = await _keyMgr.activate(
       activate: activate,
-      machineId: Prefs.machineId,
+      machineId: StorePrefs.machineId,
     );
 
     if (result.isSuccess) {
@@ -199,7 +199,7 @@ class ActivateTabState extends State<ActivateTab> {
         Expanded(
           child: _ActivationTable(
             model: model,
-            machineId: Prefs.machineId,
+            machineId: StorePrefs.machineId,
             onDeactivate: (domain) async {
               await _keyMgr.activate(activate: false, machineId: domain);
 

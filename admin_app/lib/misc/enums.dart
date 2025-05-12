@@ -1,3 +1,7 @@
+import 'package:admin_app/misc/store_prefs.dart';
+import 'package:dfc_flutter/dfc_flutter_web_lite.dart';
+import 'package:flutter/material.dart';
+
 enum WebStoreDomain {
   cocoatechIo,
   cocoatechCom,
@@ -27,5 +31,49 @@ enum WebStoreDomain {
 
   String formKey(String field) {
     return '${field}_$domain';
+  }
+}
+
+// =============================================================
+
+class WebStoreDomainMenu extends StatefulWidget {
+  const WebStoreDomainMenu();
+
+  @override
+  State<WebStoreDomainMenu> createState() => WebStoreDomainMenuState();
+}
+
+class WebStoreDomainMenuState extends State<WebStoreDomainMenu> {
+  List<MenuButtonBarItemData> menuItems() {
+    final result = <MenuButtonBarItemData>[];
+
+    for (final domain in WebStoreDomain.values) {
+      result.add(
+        MenuButtonBarItemData(
+          title: domain.name,
+          leading: Icon(
+            Icons.check,
+            color:
+                StorePrefs.webStoreDomain == domain ? null : Colors.transparent,
+          ),
+          action: () {
+            StorePrefs.webStoreDomain = domain;
+
+            // refresh menu, could also just do a prefs watch on this
+            setState(() {});
+          },
+        ),
+      );
+    }
+
+    return result;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MenuAnchorButton(
+      title: StorePrefs.webStoreDomain.name.fromCamelCase(),
+      menuData: menuItems(),
+    );
   }
 }
