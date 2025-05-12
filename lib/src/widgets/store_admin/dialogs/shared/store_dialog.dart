@@ -1,5 +1,5 @@
-import 'package:admin_app/dialogs/shared/store_dialog_base.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart';
+import 'package:dfc_store/src/widgets/store_admin/dialogs/shared/store_dialog_base.dart';
 import 'package:flutter/material.dart';
 
 Future<T?> storeDialog<T>({

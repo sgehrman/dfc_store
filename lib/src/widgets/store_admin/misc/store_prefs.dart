@@ -1,5 +1,5 @@
-import 'package:admin_app/misc/web_store_domain.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart';
+import 'package:dfc_store/src/widgets/store_admin/misc/web_store_domain.dart';
 
 class StorePrefs {
   // ----------------------------------------------------

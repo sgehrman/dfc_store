@@ -1,12 +1,12 @@
-import 'package:admin_app/dialogs/activate_dialog.dart';
-import 'package:admin_app/dialogs/creaste_dialog.dart';
-import 'package:admin_app/dialogs/lost_license_dialog.dart';
-import 'package:admin_app/dialogs/search_email_dialog.dart';
-import 'package:admin_app/dialogs/search_license_dialog.dart';
-import 'package:admin_app/dialogs/store_settings_dialog.dart';
-import 'package:admin_app/misc/store_prefs.dart';
-import 'package:admin_app/misc/web_store_domain.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart';
+import 'package:dfc_store/src/widgets/store_admin/dialogs/activate_dialog.dart';
+import 'package:dfc_store/src/widgets/store_admin/dialogs/creaste_dialog.dart';
+import 'package:dfc_store/src/widgets/store_admin/dialogs/lost_license_dialog.dart';
+import 'package:dfc_store/src/widgets/store_admin/dialogs/search_email_dialog.dart';
+import 'package:dfc_store/src/widgets/store_admin/dialogs/search_license_dialog.dart';
+import 'package:dfc_store/src/widgets/store_admin/dialogs/store_settings_dialog.dart';
+import 'package:dfc_store/src/widgets/store_admin/misc/store_prefs.dart';
+import 'package:dfc_store/src/widgets/store_admin/misc/web_store_domain.dart';
 import 'package:flutter/material.dart';
 
 class StoreAdminWidget extends StatelessWidget {

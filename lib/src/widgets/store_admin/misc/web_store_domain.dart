@@ -1,5 +1,5 @@
-import 'package:admin_app/misc/store_prefs.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart';
+import 'package:dfc_store/src/widgets/store_admin/misc/store_prefs.dart';
 import 'package:flutter/material.dart';
 
 enum WebStoreDomain {

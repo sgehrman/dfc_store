@@ -1,5 +1,5 @@
-import 'package:admin_app/store_admin_widget.dart';
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart';
+import 'package:dfc_store/dfc_store.dart';
 import 'package:flutter/material.dart';
 
 void main() async {

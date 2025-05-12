@@ -1,6 +1,6 @@
-import 'package:admin_app/dialogs/shared/store_dialog.dart';
-import 'package:admin_app/misc/store_prefs.dart';
 import 'package:dfc_store/dfc_store.dart';
+import 'package:dfc_store/src/widgets/store_admin/dialogs/shared/store_dialog.dart';
+import 'package:dfc_store/src/widgets/store_admin/misc/store_prefs.dart';
 import 'package:flutter/material.dart';
 
 Future<void> showLostLicenseDialog({required BuildContext context}) {
