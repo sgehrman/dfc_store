@@ -51,6 +51,7 @@ class _AdminWidgetState extends State<_AdminWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         TextField(
           controller: _licenseKeyController,
