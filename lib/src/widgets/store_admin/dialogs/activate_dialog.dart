@@ -23,7 +23,7 @@ class _ActivateDialogContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(child: SizedBox(height: 1000, child: ActivateTab()));
+    return Flexible(child: SizedBox(height: 700, child: ActivateTab()));
   }
 }
 
@@ -154,7 +154,6 @@ class ActivateTabState extends State<ActivateTab> {
     final isActivated = _keyMgr.isActivated();
 
     children.addAll([
-      const SizedBox(height: 20),
       _LicenseKeyTextField(textController: _licenseKeyController),
       const SizedBox(height: 10),
       _EmailTextField(textController: _emailController),
@@ -176,7 +175,17 @@ class ActivateTabState extends State<ActivateTab> {
 
       final activations = '$used/$total';
 
-      if (isActivated) {
+      if (model.isBlocked) {
+        children.addAll([
+          const SizedBox(height: 20),
+          Text22('License Blocked'),
+        ]);
+      } else if (model.isExpired) {
+        children.addAll([
+          const SizedBox(height: 20),
+          Text22('License Expired'),
+        ]);
+      } else {
         final expireDate = DateTime.tryParse(model.dateExpiry);
         var expiresString = '';
         if (expireDate != null) {
@@ -189,23 +198,14 @@ class ActivateTabState extends State<ActivateTab> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text22('License Activated', color: context.primary),
+              Text22(
+                isActivated ? 'License Activated' : 'License Deactivated',
+                color: context.primary,
+              ),
               Text16(expiresString, bold: false),
             ],
           ),
         ]);
-      } else {
-        if (model.isBlocked) {
-          children.addAll([
-            const SizedBox(height: 20),
-            Text22('License Blocked'),
-          ]);
-        } else if (model.isExpired) {
-          children.addAll([
-            const SizedBox(height: 20),
-            Text22('License Expired'),
-          ]);
-        }
       }
 
       children.addAll([
@@ -257,17 +257,21 @@ class _ActivationTable extends StatelessWidget {
     if (model == null || model!.registeredDomains.isEmpty) {
       content = const NothingFound(message: 'No Activations');
     } else {
-      content = ListView.builder(
-        itemCount: model!.registeredDomains.length,
-        itemBuilder: (context, index) {
-          final domain = model!.registeredDomains[index];
+      content = ColoredBox(
+        color: context.surfaceContainerHigh,
+        child: ListView.builder(
+          padding: const EdgeInsets.all(20),
+          itemCount: model!.registeredDomains.length,
+          itemBuilder: (context, index) {
+            final domain = model!.registeredDomains[index];
 
-          return _DomainListItem(
-            model: domain,
-            highlight: domain.registeredDomain == machineId,
-            onDeactivate: onDeactivate,
-          );
-        },
+            return _DomainListItem(
+              model: domain,
+              highlight: domain.registeredDomain == machineId,
+              onDeactivate: onDeactivate,
+            );
+          },
+        ),
       );
     }
 
@@ -361,6 +365,7 @@ class _DomainListItem extends StatelessWidget {
       trailing: DFIconButton(
         tooltip: 'Deactivate',
         icon: const Icon(Icons.clear),
+        color: context.error,
         onPressed: () {
           onDeactivate(model.registeredDomain);
         },

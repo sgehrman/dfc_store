@@ -22,7 +22,7 @@ class _SearchLicenseDialogContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Flexible(
-      child: SizedBox(height: 700, child: _AdminWidget(isMobile: false)),
+      child: SizedBox(height: 500, child: _AdminWidget(isMobile: false)),
     );
   }
 }
@@ -89,7 +89,13 @@ class _AdminWidgetState extends State<_AdminWidget> {
             }
           },
         ),
-        Expanded(child: SelectableText(_output)),
+        Expanded(
+          child: Container(
+            color: context.surfaceContainerHigh,
+            padding: const EdgeInsets.all(20),
+            child: SelectableText(_output),
+          ),
+        ),
       ],
     );
   }

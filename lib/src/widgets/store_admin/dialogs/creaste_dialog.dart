@@ -108,8 +108,6 @@ class _CreateFormState extends State<_CreateForm> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text('Create license key and send it to user'),
-          const SizedBox(height: 20),
           FormBuilder(
             autovalidateMode: _validateMode,
             key: _formKey,
