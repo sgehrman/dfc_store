@@ -1,5 +1,6 @@
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart';
 import 'package:dfc_store/dfc_store.dart';
+import 'package:dfc_store/src/widgets/store_admin/dialogs/shared/result_card.dart';
 import 'package:dfc_store/src/widgets/store_admin/dialogs/shared/store_dialog.dart';
 import 'package:dfc_store/src/widgets/store_admin/dialogs/store_json_dialog.dart';
 import 'package:dfc_store/src/widgets/store_admin/misc/store_prefs.dart';
@@ -262,10 +263,8 @@ class _ActivationTable extends StatelessWidget {
     if (model == null || model!.registeredDomains.isEmpty) {
       content = const NothingFound(message: 'No Activations');
     } else {
-      content = ColoredBox(
-        color: context.surfaceContainerHigh,
+      content = ResultCard(
         child: ListView.builder(
-          padding: const EdgeInsets.all(20),
           itemCount: model!.registeredDomains.length,
           itemBuilder: (context, index) {
             final domain = model!.registeredDomains[index];

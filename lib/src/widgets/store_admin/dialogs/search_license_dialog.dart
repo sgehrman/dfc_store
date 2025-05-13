@@ -1,5 +1,6 @@
 import 'package:dfc_flutter/dfc_flutter_web_lite.dart' hide FormBuilder;
 import 'package:dfc_store/dfc_store.dart';
+import 'package:dfc_store/src/widgets/store_admin/dialogs/shared/result_card.dart';
 import 'package:dfc_store/src/widgets/store_admin/dialogs/shared/store_dialog.dart';
 import 'package:dfc_store/src/widgets/store_admin/misc/store_prefs.dart';
 import 'package:flutter/material.dart';
@@ -105,13 +106,7 @@ class _AdminWidgetState extends State<_AdminWidget> {
           ],
         ),
         const SizedBox(height: 20),
-        Expanded(
-          child: Container(
-            color: context.surfaceContainerHigh,
-            padding: const EdgeInsets.all(20),
-            child: SelectableText(_output),
-          ),
-        ),
+        Expanded(child: ResultCard(child: SelectableText(_output))),
       ],
     );
   }
