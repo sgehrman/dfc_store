@@ -48,6 +48,5 @@ class SlmLicenseModel {
     return toJson().toString();
   }
 
-  @override
   Map<String, dynamic> toJson() => _$SlmLicenseModelToJson(this);
 }

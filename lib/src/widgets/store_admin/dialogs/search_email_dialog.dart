@@ -151,6 +151,7 @@ class _LicenseList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      itemCount: licenses.length,
       itemBuilder: (context, index) {
         final license = licenses[index];
 
