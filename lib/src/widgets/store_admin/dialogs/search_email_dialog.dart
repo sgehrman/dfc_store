@@ -60,7 +60,15 @@ class _AdminWidgetState extends State<_AdminWidget> {
     );
 
     if (result.isNotEmpty) {
-      _output = StrUtils.toPrettyString(result);
+      // _output = StrUtils.toPrettyString(result);
+
+      final licenses = result['licenses'] as List<dynamic>? ?? [];
+
+      if (licenses.isNotEmpty) {
+        _output = licenses.length.toString();
+      } else {
+        _output = 'nothing found';
+      }
 
       if (mounted) {
         setState(() {});
