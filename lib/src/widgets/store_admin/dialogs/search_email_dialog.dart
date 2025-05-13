@@ -62,10 +62,12 @@ class _AdminWidgetState extends State<_AdminWidget> {
     if (result.isNotEmpty) {
       // _output = StrUtils.toPrettyString(result);
 
-      final licenses = result['licenses'] as List<dynamic>? ?? [];
+      final licenses = List<Map<String, dynamic>>.from(
+        result['licenses'] as List<dynamic>? ?? [],
+      );
 
       if (licenses.isNotEmpty) {
-        _output = licenses.length.toString();
+        _output = StrUtils.toPrettyString(licenses.first);
       } else {
         _output = 'nothing found';
       }
