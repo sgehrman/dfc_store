@@ -5,6 +5,8 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'license_key_model.g.dart';
 
+//  result from slm_check
+
 @JsonSerializable(
   explicitToJson: true,
   includeIfNull: false,
