@@ -82,16 +82,18 @@ class _AdminWidgetState extends State<_AdminWidget> {
       children: [
         Row(
           children: [
-            TextField(
-              controller: _licenseKeyController,
-              decoration: const InputDecoration(
-                isDense: true,
-                hintText: 'License Key',
+            Expanded(
+              child: TextField(
+                controller: _licenseKeyController,
+                decoration: const InputDecoration(
+                  isDense: true,
+                  hintText: 'License Key',
+                ),
+                keyboardType: TextInputType.text,
+                autofocus: true,
+                textInputAction: TextInputAction.done,
+                onSubmitted: _onSubmit,
               ),
-              keyboardType: TextInputType.text,
-              autofocus: true,
-              textInputAction: TextInputAction.done,
-              onSubmitted: _onSubmit,
             ),
 
             const SizedBox(width: 10),
