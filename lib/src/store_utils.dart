@@ -7,7 +7,6 @@ class StoreUtils {
       .logicalKeysPressed
       .containsAll(<LogicalKeyboardKey>[
         LogicalKeyboardKey.shiftLeft,
-        LogicalKeyboardKey.altLeft,
         LogicalKeyboardKey.controlLeft,
       ]);
 }
