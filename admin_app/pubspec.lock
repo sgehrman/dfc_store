@@ -1289,10 +1289,10 @@ packages:
     dependency: transitive
     description:
       name: test_api
-      sha256: "6c7653816b1c938e121b69ff63a33c9dc68102b65a5fb0a5c0f9786256ed33e6"
+      sha256: "522f00f556e73044315fa4585ec3270f1808a4b186c936e612cab0b565ff1e00"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.5"
+    version: "0.7.6"
   timing:
     dependency: transitive
     description:
@@ -1425,10 +1425,10 @@ packages:
     dependency: transitive
     description:
       name: video_player_android
-      sha256: "1f4e8e0e02403452d699ef7cf73fe9936fac8f6f0605303d111d71acb375d1bc"
+      sha256: "28dcc4122079f40f93a0965b3679aff1a5f4251cf79611bd8011f937eb6b69de"
       url: "https://pub.dev"
     source: hosted
-    version: "2.8.3"
+    version: "2.8.4"
   video_player_avfoundation:
     dependency: transitive
     description:
@@ -1513,26 +1513,26 @@ packages:
     dependency: transitive
     description:
       name: webview_flutter_android
-      sha256: "5ece28a317a9f76ad5ee17c78dbacc8a491687cec85ee19c1643761bf8d678ef"
+      sha256: f6e6afef6e234801da77170f7a1847ded8450778caf2fe13979d140484be3678
       url: "https://pub.dev"
     source: hosted
-    version: "4.6.0"
+    version: "4.7.0"
   webview_flutter_platform_interface:
     dependency: transitive
     description:
       name: webview_flutter_platform_interface
-      sha256: e54a2a435144af4e008bea140c06913eeb3f25db421c2ceaa932f314a45d79b9
+      sha256: "7cb32b21825bd65569665c32bb00a34ded5779786d6201f5350979d2d529940d"
       url: "https://pub.dev"
     source: hosted
-    version: "2.12.0"
+    version: "2.13.0"
   webview_flutter_wkwebview:
     dependency: transitive
     description:
       name: webview_flutter_wkwebview
-      sha256: "6af7d1908c9c89311c2dffcc2c9b51b88a6f055ba16fa0aa8a04cbb1c3afc9ce"
+      sha256: a3d461fe3467014e05f3ac4962e5fdde2a4bf44c561cb53e9ae5c586600fdbc3
       url: "https://pub.dev"
     source: hosted
-    version: "3.21.0"
+    version: "3.22.0"
   widget_mask:
     dependency: transitive
     description:
