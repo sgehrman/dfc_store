@@ -13,7 +13,8 @@ dependencies:
     git: https://github.com/sgehrman/dfc_flutter
   flutter:
     sdk: flutter
-  flutter_form_builder: ^10.0.1
+  # held back for MAS
+  flutter_form_builder: ^9.5.0
   form_builder_validators: ^11.1.2
   http: ^1.4.0
   intl: ^0.19.0
