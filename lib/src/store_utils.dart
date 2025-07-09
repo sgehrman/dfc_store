@@ -17,6 +17,6 @@ class StoreUtils {
       HardwareKeyboard.instance.logicalKeysPressed
           .containsAll(<LogicalKeyboardKey>[
         LogicalKeyboardKey.shiftRight,
-        LogicalKeyboardKey.altRight,
+        LogicalKeyboardKey.altLeft,
       ]);
 }
