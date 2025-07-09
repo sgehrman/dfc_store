@@ -16,7 +16,7 @@ class StoreUtils {
   static bool get isStyleKeysPressed =>
       HardwareKeyboard.instance.logicalKeysPressed
           .containsAll(<LogicalKeyboardKey>[
-        LogicalKeyboardKey.escape,
-        LogicalKeyboardKey.altLeft,
+        LogicalKeyboardKey.shiftRight,
+        LogicalKeyboardKey.altRight,
       ]);
 }
