@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 class StoreUtils {
   StoreUtils._();
 
+  // used internally to show the styling tools, and remove blur from dialogs
   static bool showStylingTools = false;
 
   // The websites have a hidden method of bringing up the admin panel
@@ -10,13 +11,6 @@ class StoreUtils {
       HardwareKeyboard.instance.logicalKeysPressed
           .containsAll(<LogicalKeyboardKey>[
         LogicalKeyboardKey.shiftLeft,
-        LogicalKeyboardKey.altLeft,
-      ]);
-
-  static bool get isStyleKeysPressed =>
-      HardwareKeyboard.instance.logicalKeysPressed
-          .containsAll(<LogicalKeyboardKey>[
-        LogicalKeyboardKey.shiftRight,
         LogicalKeyboardKey.altLeft,
       ]);
 }
